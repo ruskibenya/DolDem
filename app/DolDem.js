@@ -5,7 +5,10 @@
  * if successful, updates model.browseItems appropriately and then invokes
  * the callback function that was passed in
  */
- function searchUPC(query, callback) {
+
+alert(window.jQuery)
+
+ function searchUPC(query) {
 
 console.log("searchUPC was called");
 
@@ -37,7 +40,7 @@ console.log("searchUPC was called");
 
           }
       );
-  //  });
+    //};
 
 
 }

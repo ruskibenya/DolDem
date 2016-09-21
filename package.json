@@ -12,6 +12,7 @@
     "prod": "brunch build --production"
   },
   "dependencies": {
+    "babel-brunch": "^6.0.6",
     "jquery": "^3.1.0",
     "semantics3-node": "0.0.3"
   },

@@ -1,7 +1,13 @@
 module.exports = {
+  npm: {
+        globals: {
+            $: 'jquery'
+  }},
+
   files: {
     javascripts: {
       joinTo: {
+        'libraries.js': /^(?!app)/,
         'vendor.js': /^(?!app)/,
         'app.js': /^app/
       }
