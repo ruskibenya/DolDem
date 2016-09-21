@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <!-- why is the following line still necessary if I can require 'jquery'? -->
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
   <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
@@ -14,6 +16,7 @@
   <script src="/vendor.js"></script>
   <script src="/app.js"></script>
   <script>require('initialize');</script>
+  <script>require('/app');</script>
 </head>
 <body>
   <div id="app"></div>
@@ -24,8 +27,7 @@
 
     <!-- add a <form> here for users to search by UPC -->
     <form id="form-search">
-      <input type="text" name="query"/>
-      <br/>
+      <input type="text" name="query"/> <br/>
       <input type="submit" value="Search By UPC"/>
     </form>
   </section>
@@ -39,16 +41,16 @@
 
   <script src="app/DolDem.js"></script>
   <script>
-    $(document).ready(function() {
-      // DONE
+    // $(document).ready(function() {
       // add a submit handler for the form above
       // should cause a fetch and re-render
-      $("#form-search").submit(function(evt) {
-        evt.preventDefault();
-        var query = $("#form-search input[name=query]").val();
-        $(searchUPC(query));
+      $("#form-search").submit(function(event) {
+        // cancel default behavior
+        event.preventDefault();
+        var query = $("#form-search input[type='text']").val();
+        searchUPC(query);
       });
-    });
+  //  });
   </script>
 </body>
 </html>
