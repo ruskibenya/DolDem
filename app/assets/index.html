@@ -5,12 +5,50 @@
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
   <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-  <title>Brunch with ES6</title>
+  <title>DolDem</title>
+  <!-- data-main attribute tells require.js to load
+          scripts/DolDem.js after require.js loads.
+          IS THIS STILL NEEDED WITH BRUNCH?
+<script data-main="scripts/DolDem.js" src="scripts/require.js"></script>
+ -->
   <script src="/vendor.js"></script>
   <script src="/app.js"></script>
   <script>require('initialize');</script>
 </head>
 <body>
   <div id="app"></div>
+    <section id="UPC Search">
+        <header>
+          <h2>Barcode search</h2><hr/>
+        </header>
+
+    <!-- add a <form> here for users to search by UPC -->
+    <form id="form-search">
+      <input type="text" name="query"/>
+      <br/>
+      <input type="submit" value="Search By UPC"/>
+    </form>
+  </section>
+
+  <footer>
+    <p>
+      2016 LaunchCode |
+      <a href="#">Fork me on Github</a>
+    </p>
+  </footer>
+
+  <script src="app/DolDem.js"></script>
+  <script>
+    $(document).ready(function() {
+      // DONE
+      // add a submit handler for the form above
+      // should cause a fetch and re-render
+      $("#form-search").submit(function(evt) {
+        evt.preventDefault();
+        var query = $("#form-search input[name=query]").val();
+        $(searchUPC(query));
+      });
+    });
+  </script>
 </body>
 </html>
