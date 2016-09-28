@@ -16,8 +16,8 @@
   <script src="/vendor.js"></script>
   <script src="/app.js"></script>
   <script>require('initialize');</script>
+  <script></script>
   <script type="text/jsx" src="app/DolDem.js"></script>
-  <script src="/libraries.js"></script>
   <!-- <script>require('/app');</script> -->
 </head>
 <body>
@@ -50,10 +50,12 @@
       $("#form-search").submit(function(event) {
         // cancel default behavior
         event.preventDefault();
+        require('DolDem');
         var query = $("#form-search input[type='text']").val();
         $(searchUPC(query));
       });
     });
+
   </script>
 </body>
 </html>

@@ -6,7 +6,6 @@
  * the callback function that was passed in
  */
 
-alert(window.jQuery)
 
 function searchUPC(query) {
 

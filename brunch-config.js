@@ -7,9 +7,16 @@ module.exports = {
   files: {
     javascripts: {
       joinTo: {
-        'libraries.js': /^(?!app)/,
         'vendor.js': /^(?!app)/,
-        'app.js': /^app/
+        'app.js': /^app/,
+/*     order: {
+        before:{
+          'app/assets/index.html'
+          }
+        after: {
+          'app/DolDem.js'
+        }
+      } */
       }
     },
     stylesheets: {joinTo: 'app.css'}
