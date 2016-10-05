@@ -2,21 +2,16 @@ module.exports = {
   npm: {
         globals: {
             $: 'jquery'
+
   }},
+
+  server: {run: true},
 
   files: {
     javascripts: {
       joinTo: {
         'vendor.js': /^(?!app)/,
         'app.js': /^app/,
-/*     order: {
-        before:{
-          'app/assets/index.html'
-          }
-        after: {
-          'app/DolDem.js'
-        }
-      } */
       }
     },
     stylesheets: {joinTo: 'app.css'}
@@ -25,4 +20,6 @@ module.exports = {
   plugins: {
     babel: {presets: ['es2015']}
   }
+
+
 };

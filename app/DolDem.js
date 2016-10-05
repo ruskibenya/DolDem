@@ -6,6 +6,7 @@
  * the callback function that was passed in
  */
 
+// Commented out while using placeholder
 alert(window.jQuery)
 
 function searchUPC(query) {
@@ -17,8 +18,6 @@ console.log("searchUPC was called");
     var api_secret = 'N2JjNjlmNzEwNDliOTM4N2YxMTI3NWEwYTJhMWI5MjE';
     var sem3 = require('semantics3-node')(api_key,api_secret);
 
-    //require(['semantics3'], function(sem3wall) {
-      //var sem3 = sem3wall(api_key, api_secret)
 
 
 
@@ -40,7 +39,7 @@ console.log("searchUPC was called");
 
           }
       );
-    //};
+
 
 
 }

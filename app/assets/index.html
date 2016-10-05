@@ -6,7 +6,7 @@
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
   <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height", target-densitydpi="device-dpi"/>
   <title>DolDem</title>
   <!-- data-main attribute tells require.js to load
           scripts/DolDem.js after require.js loads.
@@ -16,9 +16,7 @@
   <script src="/vendor.js"></script>
   <script src="/app.js"></script>
   <script>require('initialize');</script>
-  <script></script>
   <script type="text/jsx" src="app/DolDem.js"></script>
-  <!-- <script>require('/app');</script> -->
 </head>
 <body>
   <div id="app"></div>
@@ -41,7 +39,47 @@
     </p>
   </footer>
 
+<script>
+//placeholder for searchUPC function
 
+function searchUPC(query) {
+
+console.log("searchUPC was called");
+
+    // api credentials
+    var api_key = 'SEM3AFEFE0A3431261B870FB7DC3BDF7FED2';
+    var api_secret = 'N2JjNjlmNzEwNDliOTM4N2YxMTI3NWEwYTJhMWI5MjE';
+    var sem3 = require('semantics3-node')(api_key,api_secret);
+
+    //require(['semantics3'], function(sem3wall) {
+      //var sem3 = sem3wall(api_key, api_secret)
+
+
+
+      // build request from api
+      sem3.products.products_field( "upc", query );
+      sem3.products.products_field( "field", ["name","gtins"] );
+      sem3.products.products_field( "offset", 1 );
+
+      // Run the request
+      sem3.products.get_products(
+          function(err, products) {
+              if (err) {
+                  console.log("Couldn't execute request: get_products");
+                  return;
+              }
+
+        // View the results of the request
+          console.log( "Results of request:\n" + JSON.stringify( products ) );
+
+          }
+      );
+    //};
+
+
+}
+// end of placeholder
+</script>
 
   <script>
     $(document).ready(function() {
@@ -50,7 +88,8 @@
       $("#form-search").submit(function(event) {
         // cancel default behavior
         event.preventDefault();
-        require('DolDem');
+        // commneted out while using placeholer
+        //include('DolDem');
         var query = $("#form-search input[type='text']").val();
         $(searchUPC(query));
       });
