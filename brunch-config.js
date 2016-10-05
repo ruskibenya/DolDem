@@ -5,8 +5,6 @@ module.exports = {
 
   }},
 
-  server: {run: true},
-
   files: {
     javascripts: {
       joinTo: {
