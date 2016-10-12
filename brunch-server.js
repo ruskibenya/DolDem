@@ -5,6 +5,7 @@ module.exports.startServer = function(){
     , cors = require('cors')
     , app = express();
 
+  app.use(cors({origin: 'http://localhost:3333'}));
   app.use(cors());
 
   app.options('*', cors());
