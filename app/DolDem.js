@@ -14,8 +14,8 @@ function searchUPC(query) {
 console.log("searchUPC was called");
 
     // api credentials
-    var api_key = '****';
-    var api_secret = '****';
+    var api_key = 'SEM3AFEFE0A3431261B870FB7DC3BDF7FED2';
+    var api_secret = 'N2JjNjlmNzEwNDliOTM4N2YxMTI3NWEwYTJhMWI5MjE';
     var sem3 = require('semantics3-node')(api_key,api_secret);
 
 

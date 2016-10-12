@@ -5,14 +5,16 @@ module.exports = {
 
   }},
 
+  server:{run: true},
+
   files: {
-    javascripts: {
-      joinTo: {
+      javascripts: {
+        joinTo: {
         'vendor.js': /^(?!app)/,
         'app.js': /^app/,
       }
     },
-    stylesheets: {joinTo: 'app.css'}
+      stylesheets: {joinTo: 'app.css'}
   },
 
   plugins: {
