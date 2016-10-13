@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- why is the following line still necessary if I can require 'jquery'? -->
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height", target-densitydpi="device-dpi"/>
+  <title>DolDem</title>
+
+  <script src="DolDem.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+    <section id="UPC Search">
+        <header>
+          <h2>Barcode search</h2><hr/>
+        </header>
+
+    <!-- add a <form> here for users to search by UPC -->
+    <form id="form-search">
+      <input type="text" name="query"/> <br/>
+      <input type="submit" value="Search By UPC"/>
+    </form>
+
+    <p id="message"></p>
+  </section>
+
+  <footer>
+    <p>
+      2016 LaunchCode |
+      <a href="https://github.com/ruskibenya/DolDem">Fork me on Github</a>
+    </p>
+  </footer>
+
+
+  <script>
+    $(document).ready(function() {
+      // add a submit handler for the form above
+      // should cause a fetch and re-render
+      //to make more efficient create J-Query element form-search
+      var $formSearch = $("#form-search");
+      var $message = $('#message');
+      $formSearch.submit(function(event) {
+        // cancel default behavior
+        event.preventDefault();
+
+
+        var query = $formSearch.find("input[name='query']").val();
+
+        $message.html('');
+        window.DolDem.queryProducts(query, $message);
+      });
+    });
+
+  </script>
+</body>
+</html>
