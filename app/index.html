@@ -23,7 +23,8 @@
       <input type="submit" value="Search By UPC"/>
     </form>
 
-    <p id="message"></p>
+    <p id="brand"></p>
+    <p id="manufacturer"></p>
   </section>
 
   <footer>
@@ -40,7 +41,8 @@
       // should cause a fetch and re-render
       //to make more efficient create J-Query element form-search
       var $formSearch = $("#form-search");
-      var $message = $('#message');
+      var $brand = $('#brand');
+      var $manufacturer = $('#manufacturer');
       $formSearch.submit(function(event) {
         // cancel default behavior
         event.preventDefault();
@@ -48,8 +50,9 @@
 
         var query = $formSearch.find("input[name='query']").val();
 
-        $message.html('');
-        window.DolDem.queryProducts(query, $message);
+        $brand.html('');
+        $manufacturer.html('');
+        window.DolDem.queryProducts(query, $brand, $manufacturer);
       });
     });
 

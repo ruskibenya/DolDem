@@ -28,7 +28,8 @@ module.exports.startServer = function(cb){
                 return res.status(500).send('Unable to fetch products!');
               }
               // View the results of the request
-                res.status(200).send(JSON.stringify(products));
+              console.log(products);
+                res.status(200).send(products);
             }
           );
 
