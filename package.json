@@ -12,6 +12,7 @@
     "prod": "brunch build --production"
   },
   "dependencies": {
+    "async": "^2.1.2",
     "babel-brunch": "^6.0.6",
     "cors": "^2.8.1",
     "express": "^4.14.0",

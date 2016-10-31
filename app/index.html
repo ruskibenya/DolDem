@@ -8,13 +8,13 @@
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height", target-densitydpi="device-dpi"/>
   <title>DolDem</title>
 
-  <script src="DolDem.js"></script>
+  <script src="upcSearch.js"></script>
 </head>
 <body>
   <div id="app"></div>
     <section id="UPC Search">
         <header>
-          <h2>Barcode search</h2><hr/>
+          <h2>Barcode search</h2><br>
         </header>
 
     <!-- add a <form> here for users to search by UPC -->
@@ -26,6 +26,46 @@
     <p id="brand"></p>
     <p id="manufacturer"></p>
   </section>
+
+<!-- PARENT CO LOOKUP TESTING -->
+  <section id="Parent Co TEST">
+    <header>
+      <h2>ParentCO TEST</h2>
+    </header>
+
+    <form id="form-search2">
+        <input type="text" name="query" /> <br/>
+        <input type="submit" value="Company Name" />
+    </form>
+
+    <p id="parentCo"></p>
+
+  </section>
+  <script>
+    $(document).ready(function() {
+          // add a submit handler for the form above
+          // should cause a fetch and re-render
+          //to make more efficient create J-Query element form-search
+          var $formSearch = $("#form-search");
+          var $parentCo = $('#parentCo');
+          $formSearch.submit(function(event) {
+            // cancel default behavior
+            event.preventDefault();
+
+
+            var query = $formSearch.find("input[name='query']").val();
+
+            $parentCo.html('');
+            window.parentCompanySearch.queryParentCo(query, $parentCo);
+          });
+    });
+  </script>
+<!--END OF PARENT CO TESTING -->
+
+
+
+
+
 
   <footer>
     <p>
@@ -52,7 +92,7 @@
 
         $brand.html('');
         $manufacturer.html('');
-        window.DolDem.queryProducts(query, $brand, $manufacturer);
+        window.upcSearch.queryProducts(query, $brand, $manufacturer);
       });
     });
 
