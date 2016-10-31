@@ -31,7 +31,18 @@ module.exports.startServer = function(cb) {
                     function(products) {
                         // View the results of the request
                         //console.log(products);
-                        res.status(200).send(products);
+                        //res.status(200).send(products);
+
+                        //convert upcSearch into $brand and $manufacturer
+                        var products = JSON.parse(response);
+                        if (products.results_count == 0) {
+                            alert(products.message);
+                        } else if (products.results) {
+                            $brand.html("Brand: " + products.results[0].brand);
+                            $brand = products.results[0].brand.val;
+                            $manufacturer.html("Manufacturer:" + products.results[0].manufacturer);
+                            $manufacturer = products.results[0].manufacturer.val;
+                        }
                     }
                 );
                 callback();
@@ -41,14 +52,15 @@ module.exports.startServer = function(cb) {
 
                 //second request to corpwatch.org
                 //find parent company name
-                app.get('/ParentCoResults/:query', function(req, res) {
+                //app.get('/ParentCoResults/:query', function(req, res) {
 
-                  $.get("http://api.corpwatch.org/companies.json?company_name="+query, results){
-                    //View the results of the request
-                    console.log(results);
-                    res.status(200).send(results);
-                  }
-                });
+                //find parent company of brand
+                $.get("http://api.corpwatch.org/companies.json?company_name=" + $brand, results) {
+                        //View the results of the request
+                        console.log(results);
+                        //res.status(200).send(results);
+                    }
+                //});
                 callback();
             }
         ], function asyncComplete(err) { //the "complete" callback of `async.waterfall`

@@ -20,7 +20,7 @@ window.upcSearch = {
         $brand.html("Brand: " + products.results[0].brand);
         $brand = products.results[0].brand.val;
         $manufacturer.html("Manufacturer:" + products.results[0].manufacturer);
-        $brand = products.results[0].manufacturer.val;
+        $manufacturer = products.results[0].manufacturer.val;
       }
     }, function(err){
       alert(err.responseText);
