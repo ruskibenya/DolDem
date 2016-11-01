@@ -27,46 +27,6 @@
     <p id="manufacturer"></p>
   </section>
 
-<!-- PARENT CO LOOKUP TESTING -->
-  <section id="Parent Co TEST">
-    <header>
-      <h2>ParentCO TEST</h2>
-    </header>
-
-    <form id="form-search2">
-        <input type="text" name="query" /> <br/>
-        <input type="submit" value="Company Name" />
-    </form>
-
-    <p id="parentCo"></p>
-
-  </section>
-  <script>
-    $(document).ready(function() {
-          // add a submit handler for the form above
-          // should cause a fetch and re-render
-          //to make more efficient create J-Query element form-search
-          var $formSearch = $("#form-search");
-          var $parentCo = $('#parentCo');
-          $formSearch.submit(function(event) {
-            // cancel default behavior
-            event.preventDefault();
-
-
-            var query = $formSearch.find("input[name='query']").val();
-
-            $parentCo.html('');
-            window.parentCompanySearch.queryParentCo(query, $parentCo);
-          });
-    });
-  </script>
-<!--END OF PARENT CO TESTING -->
-
-
-
-
-
-
   <footer>
     <p>
       2016 LaunchCode |

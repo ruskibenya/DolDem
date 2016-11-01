@@ -1,37 +1,40 @@
-window.parentCompanySearch = {
-queryParentCo: function(query, $parentCo) {
+module.exports={
+function min_cw_idSearch(results, min_cw_id, err,) {
 
-    $.get('/ParentCoResults/' + query).then(function(response) {
-
-        console.log(response);
-
-
-        var results = JSON.parse(response);
-        var findShortestCW_id = function() {};
-
-        if (results.meta.total_results === 0) {
-            alert(results.meta.status_string);
-        } else if (results.result.companies) {
-            //for (i=results.meta.total_results; i>0; i--){
-
-            //ToDo search for result with shortest cw_id
-            //return parentCo company_name from shortest cw_id
-            findShortestCW_id = function(array) {
-                return array.reduce(function(prevCW_id, currCW_id) {
-                    if (currCW_id.length < prevCW_id.length) {
-                        return currCW_id;
-                    } else
-                        return prevCW_id;
-                });
-            };
-            $parentCo = findShortestCW_id(results.result.companies);
-            //}
+    var results = results.body;
+    results = JSON.parse(results);
+    //console.log(results);
+    var companiesList = results.result.companies;
+    var cw_id_keys = [];
+    for (var cw_id_key in companiesList) {
+        if (companiesList.hasOwnProperty(cw_id_key)) {
+            cw_id_keys.push(cw_id_key);
         }
+    }
 
+    var numResults = cw_id_keys.length;
 
+    if (numResults === 0) {
+        callback(new Error(results.meta.status_string));
+    } else {
+        //return shortest cw_id
 
-    }, function(err) {
-        alert(err.responseText);
-    });
+        function findShortestCW_id() {
+            var min = cw_id_keys[0];
+            for (i = 1; i < numResults; i++) {
+                var a = cw_id_keys[i];
+                if (a.length < min.length) {
+                    min = a;
+                }
+            }
+            return min;
+        }
+        var min_cw_id = findShortestCW_id(results);
+        //console.log(min_cw_id);
+        return min_cw_id;
+    },
+    function(err) {
+        callback(new Error(err.responseText));
+    }
 }
 };

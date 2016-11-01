@@ -1,4 +1,4 @@
-window.upcSearch = {
+/* window.upcSearch = {
  queryProducts: function (query, $brand, $manufacturer) {
 
     $.get('/products/' + query).then(function (response){
@@ -13,7 +13,7 @@ window.upcSearch = {
       //console.log(products.results[0].brand);
       //console.log(products.results_count);
 
-      if (products.results_count == 0){
+      if (products.results_count === 0){
         alert(products.message);
       }
       else if (products.results){
@@ -28,3 +28,4 @@ window.upcSearch = {
   }
 
 };
+*/
