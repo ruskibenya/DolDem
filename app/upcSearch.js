@@ -1,4 +1,4 @@
-/* window.upcSearch = {
+window.upcSearch = {
  queryProducts: function (query, $brand, $manufacturer) {
 
     $.get('/products/' + query).then(function (response){
@@ -28,4 +28,3 @@
   }
 
 };
-*/
