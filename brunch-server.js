@@ -1,6 +1,6 @@
 var request = require('request');
 var parentCoSearch = require('./app/parentCompanySearch.js');
-var scraperjs = require('scraperjs');
+//var scraperjs = require('scraperjs');
 var xmlparser = require('express-xml-bodyparser');
 //var htmlParse = require('html-to-json');
 var fs = require('file-system');
@@ -18,7 +18,7 @@ module.exports.startServer = function(cb) {
     var cheerio = require('cheerio');
 
     app.use(express.static('app'));
-    app.use(xmlparser());
+    // remove this app.use(xmlparser());
 
     //get data from browser to web-server
     app.get('/products/:query', function(req, res) {
@@ -54,8 +54,7 @@ module.exports.startServer = function(cb) {
                         });
                 },
 
-                //second request, to corpwatch.org
-                //find min_cw_id
+                //second request, to corpwatch.org, find min_cw_id
                 function(products, callback) {
 
                     //convert upcSearch into $brand and $manufacturer
@@ -109,53 +108,32 @@ module.exports.startServer = function(cb) {
 
                 //fifth request, scrape Bloomberg for company profiles, execs, and news
                 function(symbol, parentCo, products, callback) {
-                    scraperjs.DynamicScraper
-                        .create("https://www.bloomberg.com/quote/" + symbol)
-                        .scrape(function($) {
-                            return $('html');
-                        })
-                        .then(function(result) {
-                                fs.writeFile('./BloombergTest/JSONtest.json', JSON.stringify(result), function(err) {
-                                    if (err) return console.log(err);
-                                    console.log('TestResult worked');
-                                })
-                                                callback(err, bloomberg, symbol, parentCo, products);
-                                            //    console.log(result);
-                                            })
+                    request("https://www.bloomberg.com/quote/"+symbol, function(err, response, html) {
 
-                    // request("https://www.bloomberg.com/quote/"+symbol, function(err, response, html) {
-                    //
-                    //     var profile;
-                    //     // First we'll check to make sure no errors occurred when making the request
-                    //     if (!err) {
-                    //
-                    //         // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
-                    //         var $ = cheerio.load(html);
-                    //
-                    //         // We'll use the unique header class as a starting point.
-                    //         profile = $('.profile_description').text();
-                    //         console.log("5th request(profile): "+profile);
-                    //     }
-                    //
-                    //     callback(err, profile, symbol, parentCo, products);
-                    // });
+                        var profile;
+                        var news;
+                        var execs;
+                        // First we'll check to make sure no errors occurred when making the request
+                        if (!err) {
+
+                            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+                            var $ = cheerio.load(html);
+
+                            // We'll use the unique header class as a starting point.
+                            news = $('.news.show');
+                            profile = $('.profile.show');
+                            execs = $('.management.show');
+                            // boardMembers don't load, issue
+
+                            //console.log("5th request(news): "+news);
+                            //console.log("5th request(profile): "+profile);
+                            //console.log("5th request(execs): "+execs);
+                        }
+                        var bloomberg = {profile, news, execs};
+
+                        callback(err, bloomberg, symbol, parentCo, products);
+                    });
                 },
-
-                //sixth request, scrape company news from Bloomberg
-                // function(profile, symbol, parentCo, products, callback) {
-                //
-                //     scraperjs.DynamicScraper.create('https://www.bloomberg.com/quote/'+symbol)
-                //     .scrape(function($){
-                //       return $("news show").map(function(){
-                //         return $(this).text();
-                //       }).get();
-                //     })
-                //     .then(function(news){
-                //       news.forEach(function(story){
-                //         console.log(story);
-                //       });
-                //     });
-                // },
 
                 //seventh request, get orgID from openSecrets api
                 //                 // function(symbol, parentCo, products, callback) {
@@ -200,36 +178,80 @@ module.exports.startServer = function(cb) {
                 // });
                 // },
 
-                //nineth request, get xml data from violation tracker of parent Co
+
+                // 8.5th request, scrape url for violationtracker
                 function(bloomberg, symbol, parentCo, products, callback) {
+
+                    request("http://violationtracker.goodjobsfirst.org/prog.php?company="+parentCo, function(err, response, html) {
+
+                        var VTurl;
+                        // First we'll check to make sure no errors occurred when making the request
+                        if (!err) {
+
+                            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+                            var $ = cheerio.load(html);
+
+                            // We'll use the unique header class as a starting point.
+                            VTurl = $('.views-field.views-even').children().last().attr('href');
+                            //console.log("8.5th request(VTurl): "+VTurl);
+                        }
+
+                        callback(err, VTurl, bloomberg, symbol, parentCo, products);
+                    });
+                },
+
+
+                //nineth request, get xml data from violation tracker from goodjobsfirst
+                function(VTurl, bloomberg, symbol, parentCo, products, callback) {
 
                     //console.log("8th request(symbol): "+symbol);
                     //console.log("8th request(parentCo): "+parentCo);
-                    request("http://violationtracker.goodjobsfirst.org/prog.php?company=" + parentCo + "&datype=x", function(err, res) {
+                    request(VTurl + "&detail=xml_results", function(err, res) {
 
                         // First we'll check to make sure no errors occurred when making the request
                         if (!err) {
                             var violationData = res.body;
                             //console.log("8th request(violationData): "+violationData);
-                            callback(null, violationData, symbol, parentCo, products);
+                            callback(null, violationData, bloomberg, symbol, parentCo, products);
                         } else {
-                            callback(err, symbol, parentCo, products);
+                            callback(err, bloomberg, symbol, parentCo, products);
                         }
                     });
                 },
 
-                //tenth request, get xml data from subsidy tracker of parent Co
-                function(violationData, symbol, parentCo, products, callback) {
+                // 9.5th request, scrape url for subsidy tracker
+                function(violationData, bloomberg, symbol, parentCo, products, callback) {
+
+                    request("http://subsidytracker.goodjobsfirst.org/prog.php?company="+parentCo, function(err, response, html) {
+
+                        var STurl;
+                        // First we'll check to make sure no errors occurred when making the request
+                        if (!err) {
+
+                            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+                            var $ = cheerio.load(html);
+
+                            // We'll use the unique header class as a starting point.
+                            STurl = $('.views-field.views-even').children().last().attr('href');
+                            //console.log("9.5th request(STurl): "+STurl);
+                        }
+
+                        callback(err, STurl, violationData, bloomberg, symbol, parentCo, products);
+                    });
+                },
+
+                //tenth request, get xml data from subsidy tracker from goodjobsfirst
+                function(STurl, violationData, symbol, parentCo, products, callback) {
 
                     // console.log("10th request(symbol): "+symbol);
                     // console.log("10th request(parentCo): "+parentCo);
-                    request("http://subsidytracker.goodjobsfirst.org/prog.php?company=" + parentCo + "&datype=x", function(err, res) {
+                    request(STurl + "&detail=x", function(err, res) {
 
                         // First we'll check to make sure no errors occurred when making the request
                         if (!err) {
                             var subsidyData = res.body;
-                            //console.log("9th request(subsidyData): "+subsidyData);
-                            callback(null, violationData, symbol, parentCo, products);
+                            console.log("9th request(subsidyData): "+subsidyData);
+                            callback(null, subsidyData, violationData, symbol, parentCo, products);
                         } else {
                             callback(err, violationData, symbol, parentCo, products);
                         }
