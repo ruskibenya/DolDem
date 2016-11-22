@@ -15,7 +15,7 @@ module.exports = {
         var numResults = cw_id_keys.length;
 
         if (numResults === 0) {
-            callback(new Error(results.meta.status_string));
+            return (new Error(results.meta.status_string));
         } else {
             //return shortest cw_id
 

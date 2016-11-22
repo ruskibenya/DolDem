@@ -25,6 +25,9 @@
 
     <p id="brand"></p>
     <p id="manufacturer"></p>
+    <p id ="subsidies"></p>
+    <p id = "violations"></p>
+
   </section>
 
   <footer>
@@ -43,6 +46,9 @@
       var $formSearch = $("#form-search");
       var $brand = $('#brand');
       var $manufacturer = $('#manufacturer');
+      var $subsidies = $('#subsidies');
+      var $violations = $('#violations');
+      var $co_profile = $('#co_profile');
       $formSearch.submit(function(event) {
         // cancel default behavior
         event.preventDefault();
@@ -52,7 +58,7 @@
 
         $brand.html('');
         $manufacturer.html('');
-        window.upcSearch.queryProducts(query, $brand, $manufacturer);
+        window.upcSearch.queryProducts(query, $brand, $manufacturer, $subsidies, $violations);
       });
     });
 
