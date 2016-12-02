@@ -14,7 +14,9 @@ module.exports = {
         'app.js': /^app/,
       }
     },
-      stylesheets: {joinTo: 'app.css'}
+      stylesheets: {
+        joinTo: {'css/vendor.css': /^node_modules/}
+      }
   },
 
   plugins: {

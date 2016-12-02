@@ -20,7 +20,8 @@
     "request": "^2.76.0",
     "semantics3-node": "0.0.3",
     "util": "^0.10.3",
-    "xml2js": "^0.4.17"
+    "xml2js": "^0.4.17",
+    "material-design-lite": "^1.2.1"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.0.0",
