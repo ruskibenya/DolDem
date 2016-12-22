@@ -15,7 +15,12 @@ module.exports = {
       }
     },
       stylesheets: {
-        joinTo: {'css/vendor.css': /^node_modules/}
+        joinTo: {
+                "app.css": [/^vendor/, /^bower_components/, /^app/]
+            },
+            order: {
+                before: [/^app/]
+            }
       }
   },
 

@@ -195,7 +195,7 @@ module.exports.startServer = function(cb) {
                                 bloomberg.co_profile.url = url;
                               })
 
-                              console.log(bloomberg);
+                              //console.log(bloomberg);
                         }
 
 
@@ -283,7 +283,6 @@ module.exports.startServer = function(cb) {
                             parseString(violationData, {explicitArray: false}, function(err, result){
                               if (! err){
                                 //console.log(JSON.stringify(result));
-                                //violationData = JSON.stringify(result);
                                 violationData = result.ViolationTrackerSearchResults.data;
                               }
                             })
@@ -297,7 +296,6 @@ module.exports.startServer = function(cb) {
 
                 // 9.5th request, scrape url for subsidy tracker
                 function(violationData, bloomberg, parentCo, callback) {
-
                     request("http://subsidytracker.goodjobsfirst.org/prog.php?company="+parentCo, function(err, response, html) {
 
                         var STurl;
@@ -318,7 +316,6 @@ module.exports.startServer = function(cb) {
 
                 //tenth request, get xml data from subsidy tracker from goodjobsfirst
                 function(STurl, violationData, bloomberg, callback) {
-
                     // console.log("10th request(symbol): "+symbol);
                     // console.log("10th request(parentCo): "+parentCo);
                     request(STurl + "&detail=x", function(err, res) {
