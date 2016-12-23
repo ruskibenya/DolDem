@@ -35,3 +35,30 @@
 .vertical-mdl-tabs.mdl-tabs .mdl-tabs__tab {
     text-align: left;
 }
+
+.content
+{
+  border-style: solid;
+  margin-left: 5%;
+  width: 60%;
+}
+.bold-lower-divider{
+  border-bottom-style: solid;
+  border-width: 10px;
+  border-collapse: collapse;
+}
+.light-lower-divider{
+  border-bottom-style: solid;
+  border-width: 5px;
+}
+
+#nutrition-label{
+  margin-left: 5%;
+  font-size: 30px;
+  text-indent: 10px;
+}
+#regular-item{
+  border-bottom-style: solid;
+  border-width: 2px;
+  border-collapse: collapse;
+}
