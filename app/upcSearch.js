@@ -69,7 +69,7 @@ window.upcSearch = {
 
 
 
-    //console.log("bloomberg: "+ JSON.stringify(bloomberg));
+    console.log("bloomberg: "+ JSON.stringify(bloomberg));
 
 
 

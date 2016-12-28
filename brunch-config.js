@@ -14,14 +14,14 @@ module.exports = {
         'app.js': /^app/,
       }
     },
-      stylesheets: {
-        joinTo: {
-                "app.css": [/^vendor/, /^bower_components/, /^app/]
-            },
-            order: {
-                before: [/^app/]
-            }
-      }
+    stylesheets: {
+      joinTo: {
+              "app.css": [/^vendor/, /^bower_components/, /^app/]
+          },
+          order: {
+              after: [/^app/]
+          }
+    }
   },
 
   plugins: {
