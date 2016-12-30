@@ -1,8 +1,7 @@
 module.exports = {
   npm: {
         globals: {
-            $: 'jquery'
-
+            $: 'jquery',
   }},
 
   server:{run: true},

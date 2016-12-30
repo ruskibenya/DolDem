@@ -5,6 +5,7 @@
     - figure out if parsing XML in server makes sense?
     - scrap parentCoSearch feature? Seems like unnecessary if just adjust VT + ST, what about bloomberg?
     - clean up profile in bloomberg profile, filter out class=profile__detail__label
+    - webscraper not working for bloomberg symbol
      */
 
 
@@ -22,6 +23,7 @@ module.exports.startServer = function(cb) {
     var async = require('async');
     var cheerio = require('cheerio');
     var util = require('util');
+    
 
     // REMOVE THIS PROBABLY, used in subsidyDATA and violationData
     var parseString = require('xml2js').parseString;
@@ -93,17 +95,19 @@ module.exports.startServer = function(cb) {
                         callback(err, parentCo);
                     });
                 },
-
+//////////NOT WORKING!!!!!!!!!!!!!
                 //fourth request, scrape stock symbol from Bloomberg
                 function(parentCo, callback) {
 
-                    request("http://www.bloomberg.com/markets/symbolsearch?query=" + parentCo + "&commit=Find+Symbols.json", function(err, response, html) {
+                    request("http://www.bloomberg.com/markets/symbolsearch?query="+parentCo+"&commit=Find+Symbols.json", function(err, response, html) {
 
                         var symbol;
                         // First we'll check to make sure no errors occurred when making the request
                         if (!err) {
 
                             // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+                            //Seems weird response, using for testing
+                            //console.log("html: "+html);
                             var $ = cheerio.load(html);
 
                             // We'll use the unique header class as a starting point.
@@ -136,14 +140,7 @@ module.exports.startServer = function(cb) {
                             // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
                             var $ = cheerio.load(html);
 
-                            // We'll use the unique header class as a starting point.
-                            //bloomberg.news=('"'+$('.news.show')+'"');
-                            //bloomberg.execs=('"'+$('.management.show')+'"');
-                            // bloomberg.co_profile=('"'+$('.profile.show')+'"');
-                            // console.log(bloomberg.co_profile);
-
                             //Get Company News and Press Releases
-
                             //Company News:
                               $(" .news__state.active > article").each(function(i){
                                 //var time_published = $(this).first().text();
@@ -257,11 +254,12 @@ module.exports.startServer = function(cb) {
                         if (!err) {
 
                             // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+                            //console.log("VTURL: "+html);
                             var $ = cheerio.load(html);
 
                             // We'll use the unique header class as a starting point.
                             VTurl = $('.views-field.views-even').children().last().attr('href');
-                            //console.log("8.5th request(VTurl): "+VTurl);
+                            console.log("8.5th request(VTurl): "+VTurl);
                         }
 
                         callback(err, VTurl, bloomberg, parentCo);

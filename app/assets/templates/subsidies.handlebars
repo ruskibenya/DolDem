@@ -1,36 +1,9 @@
-<ul class="subsidy">
-{{#each subsidy}}
-  <li class="subsidy_company">{{subsidy.company}}</li>
-  <li class="subsidy_parent">{{parent_company}}</li>
-  <li class="subsidy_source">{{subsidy_source}}</li>
-  <li class="subsidy_location">{{location}}</li>
-  <li class="subsidy_city">{{city}}</li>
-  <li class="subsidy_county">{{county}}</li>
-  <li class="subsidy_description">{{description}}</li>
-  <li class="subsidy_year">{{subsidy_year}}</li>
-  <li class="subsidy_amount_in_dollars">{{subsidy_amount_in_dollars}}</li>
-  <li class="subsidy_program">{{program}}</li>
-  <li class="subsidy_type">{{subsidy_type}}</li>
-  <li class="subsidy_jobs">{{jobs_data}}</li>
-  <li class="subsidy_investment">{{investment_data}}</li>
-  <li class="subsidy_notes">{{notes}}</li>
-</ul>
+<div class="subsidy_list">
+    {{#each subsidies}}
+    <p>
+        city: {{city}}<br> company: {{company}} <br> county: {{county}} <br> description: {{description}} <br> investment data: {{investment_data}} <br> jobs data: {{jobs_data}} <br> location: {{location}} <br> notes: {{notes}}
+        <br> parent company: {{parent_company}} <br> program name: {{program_name}} <br> subsidy source: {{subsidy_source}} <br> subsidy type: {{subsidy_type}} <br> subsidy value: {{subsidy_value}} <br> subsidy year: {{subsidy_year}}
 
-subsidies is my context
-
-
-subsidy = (
-  "Company: " + subsidyData.record[i].company + "<br>" +
-  "Parent Company: " + subsidyData.record[i].parent_company + "<br>" +
-  "Source of Subsidy: "+ subsidyData.record[i].subsidy_source + "<br>"+
-  "Location: " + subsidyData.record[i].location + "<br>"+
-  "City: " + subsidyData.record[i].city + "<br>"+
-  "County: " + subsidyData.record[i].county + "<br>"+
-  "Description: " + subsidyData.record[i].description + "<br>"+
-  "Subsidy Year: " + subsidyData.record[i].subsidy_year + "<br>"+
-  "Subsidy Value: " + subsidyData.record[i].subsidy_amount_in_dollars +"<br>"+
-  "Program Name: " + subsidyData.record[i].program + "<br>"+
-  "Type of Subsidy: " + subsidyData.record[i].subsidy_type + "<br>"+
-  "Number of Jobs: " + subsidyData.record[i].jobs_data + "<br>"+
-  "Capital Investment: " + subsidyData.record[i].investment_data + "<br>"+
-  "Notes: " + subsidyData.record[i].notes + "<br>"
+    </p>
+    {{/each}}
+</div>
