@@ -16,6 +16,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.2.1/material.js"></script>
     <script src= "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+<!-- use with precompiled templates    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.min.js"></script> -->
     <script src="upcSearch.js"></script>
 
 </head>
@@ -65,15 +66,23 @@
                             <div class="bold-lower-divider" id="nutrition-label"> ABC COMPANY FACTS </div>
                             <div class="mdl-tabs__panel is-active" id="tab1-panel">
                                 <div class="co_profile bold-lower-divider">
+                                  <div id ="execsResults"></div>
                                     <div class="Execs light-lower-divider">
-                                        <script id="exec-template" type="text/x-handlebars-template">
-                                            <p id=regular-item>{{bloomberg.execs.jobtitle}}: <a href={{bloomberg.execs.url}}> {{bloomberg.execs.name}}</a></p>
+                                        <script id="execs-template" type="text/x-handlebars-template">
+                                          <ul class="exec_list">
+                                            {{#each this}}
+                                              <a href={{url}}>{{jobtitle}}:</a> {{name}}
+                                            {{/each}}
+                                          </ul>
                                         </script>
                                     </div>
                                     <div class="Description bold-lower-divider">
-                                        {{bloomberg.co_profile.description}}
+                                        <p id="co_profile_description"></p>
                                     </div>
-                                    <div class="Contact-Info"><span><i class="material-icons">home</i>{{bloomberg.co_profile.address}}</span> <span><i class="material-icons">phone</i>{{bloomberg.co_profile.phone</span> <span><i class="material-icons">language</i><a href={{bloomberg.co_profile.url}}>{{bloomberg.co_profile.website}}</a></span>
+                                    <div class="Contact-Info">
+                                      <p><i class="material-icons">home</i><span id="co_profile_address"></span></p>
+                                      <p><i class="material-icons">phone</i><span id="co_profile_phone"></span></p>
+                                      <p><i class="material-icons">language</i><a href={{bloomberg.co_profile.url}}><span id="co_profile_website"></span></a></p>
                                     </div>
                                 </div>
                             </div>
@@ -157,6 +166,10 @@
                 var $subsidies = $('#subsidies');
                 var $violations = $('#violations');
                 var $co_profile = $('#co_profile');
+                var $co_profile_description = $('#co_profile_description');
+                var $co_profile_address = $('#co_profile_address');
+                var $co_profile_phone = $('#co_profile_phone');
+                var $co_profile_website = $('#co_profile_website');
                 $formSearch.submit(function(event) {
                     // cancel default behavior
                     event.preventDefault();
@@ -166,7 +179,7 @@
 
                     $brand.html('');
                     $manufacturer.html('');
-                    window.upcSearch.queryProducts(query, $brand, $manufacturer, $subsidies, $violations);
+                    window.upcSearch.queryProducts(query, $brand, $manufacturer, $subsidies, $violations, $co_profile_description);
 
                 });
             });

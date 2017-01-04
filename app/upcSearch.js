@@ -2,9 +2,10 @@
 //  - How to break up into multiple files to organize output: subsidydata, violationData, bloomberg, etc
 //  - Figure out what to do if violationData.record.length = 1 or subsidydata.record.length = 1
 // Precompile handlebars templates
+//change ABC Company to parentCo
 
 window.upcSearch = {
- queryProducts: function (query, $brand, $manufacturer, $subsidies, $violations) {
+ queryProducts: function (query, $brand, $manufacturer, $subsidies, $violations, $co_profile_description) {
 
     $.get('/products/' + query).then(function (response){
 
@@ -79,10 +80,30 @@ window.upcSearch = {
     // $("#violationsResults").html(violations_template(context_vio));
 
 
-    //console.log("bloomberg: "+ JSON.stringify(bloomberg));
+    console.log("bloomberg: "+ JSON.stringify(bloomberg.co_profile.description));
+
+    //handlebars compile for bloomberg execs
+    var execs_source = $("#execs-template").html();
+    var execs_template = Handlebars.compile(execs_source);
+    var context_execs = bloomberg.execs;
+    $("#execsResults").html(execs_template(context_execs));
+
+    $("#co_profile_description").html(bloomberg.co_profile.description);
+    $("#co_profile_address").html(bloomberg.co_profile.address);
+    $("#co_profile_phone").html(bloomberg.co_profile.phone);
+    $("#co_profile_website").html(bloomberg.co_profile.website);
+    //FIGURE OUT HOW TO DO href=
+    //$("#co_profile_url")=bloomberg.co_profile.url;
 
 
 
+
+
+
+
+
+    //enter brand name in company facts title
+    //$brand.html($brand);
 
 
     }, function(err){

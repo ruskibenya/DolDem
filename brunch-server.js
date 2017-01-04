@@ -6,7 +6,7 @@
     - scrap parentCoSearch feature? Seems like unnecessary if just adjust VT + ST, what about bloomberg?
     - clean up profile in bloomberg profile, filter out class=profile__detail__label
     - webscraper not working for bloomberg symbol
-     */
+         */
 
 
 var request = require('request');
@@ -98,8 +98,7 @@ module.exports.startServer = function(cb) {
 //////////NOT WORKING!!!!!!!!!!!!!
                 //fourth request, scrape stock symbol from Bloomberg
                 function(parentCo, callback) {
-
-                    request("http://www.bloomberg.com/markets/symbolsearch?query="+parentCo+"&commit=Find+Symbols.json", function(err, response, html) {
+                    request("https://www.bloomberg.com/markets/symbolsearch?query="+parentCo+"&commit=Find+Symbols.json", function(err, response, html) {
 
                         var symbol;
                         // First we'll check to make sure no errors occurred when making the request
@@ -122,7 +121,6 @@ module.exports.startServer = function(cb) {
                 //fifth request, scrape Bloomberg for company profiles, execs, and news
                 function(symbol, parentCo, callback) {
                     request("https://www.bloomberg.com/quote/"+symbol, function(err, response, html) {
-
 
                         var co_profile = {};
                         var execs = {};
@@ -259,7 +257,7 @@ module.exports.startServer = function(cb) {
 
                             // We'll use the unique header class as a starting point.
                             VTurl = $('.views-field.views-even').children().last().attr('href');
-                            console.log("8.5th request(VTurl): "+VTurl);
+                            //console.log("8.5th request(VTurl): "+VTurl);
                         }
 
                         callback(err, VTurl, bloomberg, parentCo);
@@ -284,7 +282,7 @@ module.exports.startServer = function(cb) {
                                 violationData = result.ViolationTrackerSearchResults.data;
                               }
                             })
-                            //console.log("9th request(violationData): "+ JSON.stringify(violationData));
+                            //console.log("9th request(violationData): "+violationData);
                             callback(null, violationData, bloomberg, parentCo);
                         } else {
                             callback(err, bloomberg, parentCo);
