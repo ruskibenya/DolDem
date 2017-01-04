@@ -23,7 +23,7 @@ module.exports.startServer = function(cb) {
     var async = require('async');
     var cheerio = require('cheerio');
     var util = require('util');
-    
+
 
     // REMOVE THIS PROBABLY, used in subsidyDATA and violationData
     var parseString = require('xml2js').parseString;
@@ -284,7 +284,7 @@ module.exports.startServer = function(cb) {
                                 violationData = result.ViolationTrackerSearchResults.data;
                               }
                             })
-                            //console.log("9th request(violationData): "+violationData);
+                            //console.log("9th request(violationData): "+ JSON.stringify(violationData));
                             callback(null, violationData, bloomberg, parentCo);
                         } else {
                             callback(err, bloomberg, parentCo);

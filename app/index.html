@@ -1,3 +1,5 @@
+<!-- TOdo: make tab headers adjust to size of screen properly-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,10 +14,10 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-light_blue.min.css" />
     <link rel="stylesheet" href="./styles/main.css">
 
-
-    <script src="upcSearch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.2.1/material.js"></script>
-    <script>require('handlebars/runtime');</script>
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+    <script src="upcSearch.js"></script>
+
 </head>
 
 
@@ -122,6 +124,7 @@
                                 </div>
                             </div>
                             <div class="mdl-tabs__panel" id="tab4-panel">
+                                <div id ="subsidiesResults"></div>
                                 <script id="subsidies-template" type="text/x-handlebars-template">
                                 <div class="subsidy_list">
                                     {{#each subsidies}}
@@ -133,47 +136,6 @@
                                     {{/each}}
                                 </div>
                               </script>
-
-                                <!--
-                                <div mdl-grid class="subsidy bold-lower-divider">Subsidy 1
-                                  <div class="mdl-cell--12-col light-lower-divider subsidy_header">
-                                    <div id="regular-item">
-                                      <span class="subsidy_company">Company: {{subsidy.company}}</span>
-                                      <span class="subsidy_parent">Parent Company:{{subsidy_parent_company}}</span>
-                                      <span class="subsidy_year">Subsidy Year:{{subsidy_year}}</span>
-                                    </div>
-                                    <div id="regular-item">
-                                      <span class="subsidy_source">Subsidy Source: {{subsidy_source}}</span>
-                                      <span class="subsidy_type">Subsidy Type:{{subsidy_type}}</span>
-                                      <span class="subsidy_program">Subsidy Program:{{program}}</span>
-                                    </div>
-                                    <div id="regular-item">
-                                      <span class="subsidy_location">Location: {{location}}</span>
-                                      <span class="subsidy_city">City: {{city}}</span>
-                                      <span class="subsidy_county">County: {{county}}</span>
-                                    </div>
-                                  </div>
-                                  <div class="mdl-cell--12-col light-lower-divider subsidy_data">
-                                    <table>
-                                      <tr>
-                                        <th id="regular-item">Subsidy Amount:</th><td id="regular-item">{{subsidy_amount_in_dollars}}</td>
-                                      </tr>
-                                      <tr>
-                                        <th id="regular-item">Investment Data:</th><td id="regular-item">{{investment_data}}</td>
-                                      </tr>
-                                      <tr>
-                                        <th align="left">Jobs Data:</th><td>{{jobs_data}}</td>
-                                      </tr>
-                                    </table>
-                                  </div>
-                                  <div class="mdl-cell--col-12 subsidy_foot">
-                                    <p class="subsidy_description" id="regular-item">{{description}}</p>
-                                    <span class="subsidy_notes">{{notes}}</span>
-                                  </div>
-                                </div>
-                              -->
-
-
                             </div>
                             <div class="mdl-tabs__panel" id="tab5-panel">
                                 Content 5
