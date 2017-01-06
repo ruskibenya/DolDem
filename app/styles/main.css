@@ -51,14 +51,55 @@
   border-bottom-style: solid;
   border-width: 5px;
 }
+.very-light-lower-divider{
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.Contact-Info{
+  text-align: center;
+}
+.list{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 
 #nutrition-label{
-  margin-left: 5%;
+  margin-left: 4%;
+  margin-right: 4%;
   font-size: 30px;
   text-indent: 10px;
+  padding-bottom: 5px;
 }
 #regular-item{
   border-bottom-style: solid;
   border-width: 2px;
   border-collapse: collapse;
+}
+#big-bold{
+  font-size: 20px;
+  font-weight: bold;
+}
+#penalty_value{
+  font-size: 40px;
+  font-weight: bold;
+  float:right;
+  color:red;
+}
+#subsidy_value{
+  font-size: 40px;
+  font-weight: bold;
+  float:right;
+  color:red;
+  margin-top: 5px;
+}
+#padding{
+  padding: 10px 10px 10px 10px;
+}
+.title{
+  text-align: center;
+}
+right{
+  float:right;
 }

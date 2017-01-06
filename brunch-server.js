@@ -80,13 +80,13 @@ module.exports.startServer = function(cb) {
 
                         var min_cw_id = parentCoSearch.min_cw_idSearch(results);
                         //console.log(parentCoSearch.min_cw_idSearch(results));
-                        callback(err, min_cw_id);
+                        callback(err, min_cw_id, brand);
 
                     });
                 },
 
                 //third request, to corpwatch.org
-                function(min_cw_id, callback) {
+                function(min_cw_id, brand, callback) {
 
                     //use min_cw_id to find parent name
                     request('http://api.corpwatch.org/companies/' + min_cw_id, function(err, results) {
@@ -95,9 +95,8 @@ module.exports.startServer = function(cb) {
                         callback(err, parentCo);
                     });
                 },
-//////////NOT WORKING!!!!!!!!!!!!!
                 //fourth request, scrape stock symbol from Bloomberg
-                function(parentCo, callback) {
+                function(parentCo, brand, callback) {
                     request("https://www.bloomberg.com/markets/symbolsearch?query="+parentCo+"&commit=Find+Symbols.json", function(err, response, html) {
 
                         var symbol;
@@ -114,12 +113,12 @@ module.exports.startServer = function(cb) {
                             //console.log("4th request(symbol): "+symbol);
                         }
 
-                        callback(err, symbol, parentCo);
+                        callback(err, symbol, parentCo, brand);
                     });
                 },
 
                 //fifth request, scrape Bloomberg for company profiles, execs, and news
-                function(symbol, parentCo, callback) {
+                function(symbol, parentCo, brand, callback) {
                     request("https://www.bloomberg.com/quote/"+symbol, function(err, response, html) {
 
                         var co_profile = {};
@@ -194,60 +193,70 @@ module.exports.startServer = function(cb) {
                         }
 
 
-                        callback(err, bloomberg, parentCo);
+                        callback(err, bloomberg, parentCo, brand);
                     });
                 },
 
                 //seventh request, get orgID from openSecrets api
-                //                 // function(symbol, parentCo, products, callback) {
-                //                 //
-                //                 //   //openSecrets api_key
-                //                 //   var key = "27ca23c2803eddb132adecd7238d4c94";
-                //                 //
-                //                 //   opensecrets-client module try
-                //                 //   var client = new OpenSecretsClient(key);
-                //                 //   client.makeRequest('getOrgs',{id:parentCo, output: 'json'})
-                //                 //     .on('complete', function(res){
-                //                 //       if (res instanceof Error){
-                //                 //       callback(new Error("Open Secrets couldn't getOrgs"));
-                //                 //     }
-                //                 //     else
-                //                 //       console.log(res);
-                //                 //       callback(null, res, products);
-                //                 //     });
-                //                 //
-                //                 //   opensecrets-js module try
-                //                 //   OpenSecrets.getOrgs(parentCo, function(res){
-                //                 //     console.log(res);
-                //                 //   });
-                //
-                //
-                // /***** most simple http request no node module**/
-                //                 //   request('http://www.opensecrets.org/api/?method=getOrgs&org='+ parentCo+'&apikey='+key+'&output=json', function(err, results) {
-                //                 //       //var orgID = SOMETHING(results);
-                //                 //       console.log("6th request(orgID): "+results.body);
-                //                 //       callback(err, orgID, symbol, parentCo, products);
-                //                 //   });
-                //                 // },
+
+                                 function (bloomberg, parentCo, brand, callback) {
+                                   //openSecrets api_key
+                                   var key = "27ca23c2803eddb132adecd7238d4c94";
+
+                                   request('http://www.opensecrets.org/api/?method=getOrgs&org='+ parentCo+'&apikey='+key+'&output=xml', function(err, results) {
+                                     // First we'll check to make sure no errors occurred when making the request
+                                     if (!err) {
+                                         var orgID = results.body;
+                                         //console.log("6th request(orgID): "+JSON.stringify(orgID));
+                                         parseString(orgID, {explicitArray: false}, function(err, result){
+                                           if (! err){
+                                             //console.log(JSON.stringify(result));
+                                             orgID = result.response.organization.$.orgid;
+                                             //console.log("orgID: "+orgID);
+                                           }
+                                         })
+                                         //console.log("9th request(violationData): "+violationData);
+                                         callback(null, orgID, parentCo, brand, bloomberg);
+                                     } else {
+                                         callback(err, bloomberg, brand, parentCo);
+                                     }
+                                   });
+                                 },
 
                 // //eigth request, get lobby info from openSecrets api
-                // function(orgID, symbol, parentCo, products, callback) {
-                //
-                // request('http://www.opensecrets.org/api/?method=orgSummary&id='+orgID+'&apikey='+key+'&output=json', function(err, results) {
-                //     //var orgID = SOMETHING(results);
-                //     console.log("7th request(response): "+results.body);
-                //     var secretsSummary = SOMETHING(results);
-                //     callback(err, secretsSummary, products);
-                // });
-                // },
+                function(orgID, parentCo, bloomberg, brand, callback) {
+                  //openSecrets api_key
+                  var key = "27ca23c2803eddb132adecd7238d4c94";
+
+                request('http://www.opensecrets.org/api/?method=orgSummary&id='+orgID+'&apikey='+key+'&output=xml', function(err, results) {
+                  // First we'll check to make sure no errors occurred when making the request
+                  if (!err) {
+                      var secretsSummary = results.body;
+                      //console.log("6th request(orgID): "+JSON.stringify(orgID));
+                      parseString(secretsSummary, {explicitArray: false}, function(err, result){
+                        if (! err){
+                          //console.log(JSON.stringify(result));
+                          secretsSummary = result.response.organization.$;
+                          //console.log("secretsSummary: "+JSON.stringify(secretsSummary));
+                        }
+                      })
+                      callback(null, bloomberg, parentCo, brand, secretsSummary);
+                  } else {
+                      callback(err, bloomberg, parentCo, brand);
+                  }
+                });
+                },
 
 
                 // 8.5th request, scrape url for violationtracker
-                function(bloomberg, parentCo, callback) {
+                function(bloomberg, parentCo, brand, secretsSummary, callback) {
+
+                  //console.log(parentCo);
 
                     request("http://violationtracker.goodjobsfirst.org/prog.php?company="+parentCo, function(err, response, html) {
 
                         var VTurl;
+
                         // First we'll check to make sure no errors occurred when making the request
                         if (!err) {
 
@@ -257,16 +266,16 @@ module.exports.startServer = function(cb) {
 
                             // We'll use the unique header class as a starting point.
                             VTurl = $('.views-field.views-even').children().last().attr('href');
-                            //console.log("8.5th request(VTurl): "+VTurl);
+                            console.log("8.5th request(VTurl): "+VTurl);
                         }
 
-                        callback(err, VTurl, bloomberg, parentCo);
+                        callback(err, VTurl, bloomberg, parentCo, secretsSummary);
                     });
                 },
 
 
                 //nineth request, get xml data from violation tracker from goodjobsfirst
-                function(VTurl, bloomberg, parentCo, callback) {
+                function(VTurl, bloomberg, parentCo, secretsSummary, callback) {
 
                     //console.log("8th request(symbol): "+symbol);
                     //console.log("8th request(parentCo): "+parentCo);
@@ -279,19 +288,20 @@ module.exports.startServer = function(cb) {
                             parseString(violationData, {explicitArray: false}, function(err, result){
                               if (! err){
                                 //console.log(JSON.stringify(result));
-                                violationData = result.ViolationTrackerSearchResults.data;
+                                violationData = result.ViolationTrackerSearchResults;
+                                //console.log(violationData);
                               }
                             })
                             //console.log("9th request(violationData): "+violationData);
-                            callback(null, violationData, bloomberg, parentCo);
+                            callback(null, violationData, bloomberg, parentCo, secretsSummary);
                         } else {
-                            callback(err, bloomberg, parentCo);
+                            callback(err, bloomberg, parentCo, secretsSummary);
                         }
                     });
                 },
 
                 // 9.5th request, scrape url for subsidy tracker
-                function(violationData, bloomberg, parentCo, callback) {
+                function(violationData, bloomberg, parentCo,secretsSummary, callback) {
                     request("http://subsidytracker.goodjobsfirst.org/prog.php?company="+parentCo, function(err, response, html) {
 
                         var STurl;
@@ -306,12 +316,12 @@ module.exports.startServer = function(cb) {
                             //console.log("9.5th request(STurl): "+STurl);
                         }
 
-                        callback(err, STurl, violationData, bloomberg);
+                        callback(err, STurl, violationData, bloomberg, parentCo, secretsSummary);
                     });
                 },
 
                 //tenth request, get xml data from subsidy tracker from goodjobsfirst
-                function(STurl, violationData, bloomberg, callback) {
+                function(STurl, violationData, bloomberg, parentCo, secretsSummary, callback) {
                     // console.log("10th request(symbol): "+symbol);
                     // console.log("10th request(parentCo): "+parentCo);
                     request(STurl + "&detail=x", function(err, res) {
@@ -321,21 +331,21 @@ module.exports.startServer = function(cb) {
                             var subsidyData = res.body;
                             parseString(subsidyData, {explicitArray: false}, function(err, result){
                               if (!err){
-                                subsidyData = result.SubsidyTrackerSearchResults.data;
-                                //subsidyData = subsidyData.SubsidyTrackerSearchResults.data;
+                                subsidyData = result.SubsidyTrackerSearchResults;
+                                //console.log(subsidyData);
                               }
                             });
                             //console.log("10th request(subsidyData): "+subsidyData);
-                            callback(null, subsidyData, violationData, bloomberg);
+                            callback(null, subsidyData, violationData, bloomberg, parentCo, secretsSummary);
                         } else {
-                            callback(err, violationData, bloomberg);
+                            callback(err, violationData, bloomberg, parentCo, secretsSummary);
                         }
                     });
                 }
 
 
             ],
-            function asyncComplete(err, subsidyData, violationData, bloomberg) { //change results to companies
+            function asyncComplete(err, subsidyData, violationData, bloomberg, parentCo, secretsSummary) { //change results to companies
                 if (err) { //there was an error with some earlier function
 
                     console.log("Error", err);
@@ -345,7 +355,9 @@ module.exports.startServer = function(cb) {
                     return res.status(200).send({
                       subsidyData: subsidyData,
                       violationData: violationData,
-                      bloomberg: bloomberg
+                      bloomberg: bloomberg,
+                      parentCo: parentCo,
+                      secretsSummary: secretsSummary
                   });
                 }
             }
