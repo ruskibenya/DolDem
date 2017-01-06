@@ -92,7 +92,7 @@ module.exports.startServer = function(cb) {
                     request('http://api.corpwatch.org/companies/' + min_cw_id, function(err, results) {
                         var parentCo = parentCoSearch.parentCo_Query(results);
                         //console.log("3rd request(parentCo): "+parentCo);
-                        callback(err, parentCo);
+                        callback(err, parentCo, brand);
                     });
                 },
                 //fourth request, scrape stock symbol from Bloomberg
@@ -266,18 +266,46 @@ module.exports.startServer = function(cb) {
 
                             // We'll use the unique header class as a starting point.
                             VTurl = $('.views-field.views-even').children().last().attr('href');
-                            console.log("8.5th request(VTurl): "+VTurl);
+                            //console.log("8.5th request(VTurl): "+VTurl);
                         }
-
-                        callback(err, VTurl, bloomberg, parentCo, secretsSummary);
+                        if (VTurl === undefined){
+                          VTurl = "try_again";
+                          callback(err, VTurl, bloomberg, parentCo, brand, secretsSummary);
+                        }
+                        else{
+                          callback(err, VTurl, bloomberg, parentCo, brand, secretsSummary);
+                        }
                     });
+                },
+
+                //IF VTurl = undefined, try violationtracker url scraper again
+                function(VTurl, brand, parentCo, bloomberg, secretsSummary, callback) {
+                  //console.log("VTurl 3: "+VTurl);
+                  if (VTurl === "try_again"){
+                    request("http://violationtracker.goodjobsfirst.org/prog.php?company="+brand, function(err, response, html) {
+                        // First we'll check to make sure no errors occurred when making the request
+                        if (!err) {
+
+                            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+                            //console.log("VTURL: "+html);
+                            var $ = cheerio.load(html);
+
+                            // We'll use the unique header class as a starting point.
+                            VTurl = $('.views-field.views-even').children().last().attr('href');
+                            //console.log("try again request(VTurl): "+VTurl);
+                        }
+                        callback(err, VTurl, bloomberg, parentCo, brand, secretsSummary);
+                    });
+                  }else{
+                    callback(null, VTurl, bloomberg, parentCo, brand, secretsSummary);
+                  }
                 },
 
 
                 //nineth request, get xml data from violation tracker from goodjobsfirst
-                function(VTurl, bloomberg, parentCo, secretsSummary, callback) {
+                function(VTurl, bloomberg, parentCo, brand, secretsSummary, callback) {
 
-                    //console.log("8th request(symbol): "+symbol);
+                    //console.log("8th request(symbol): "+VTurl);
                     //console.log("8th request(parentCo): "+parentCo);
                     request(VTurl+"&detail=xml_results", function(err, res) {
 
