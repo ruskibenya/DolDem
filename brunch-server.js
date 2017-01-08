@@ -1,11 +1,7 @@
 /* ToDo:
-    - if VTurl or STurl undefined for parentCo, try to search with brand/manufacturer or symbol?
     - restructure to make way for forEach/for loop (LOOK back at brunch-serverNEW.js)
     - get boardMembers to work in bloomberg.profile
-    - figure out if parsing XML in server makes sense?
     - scrap parentCoSearch feature? Seems like unnecessary if just adjust VT + ST, what about bloomberg?
-    - clean up profile in bloomberg profile, filter out class=profile__detail__label
-    - webscraper not working for bloomberg symbol
          */
 
 
@@ -321,15 +317,15 @@ module.exports.startServer = function(cb) {
                               }
                             })
                             //console.log("9th request(violationData): "+violationData);
-                            callback(null, violationData, bloomberg, parentCo, secretsSummary);
+                            callback(null, violationData, bloomberg, parentCo, brand, secretsSummary);
                         } else {
-                            callback(err, bloomberg, parentCo, secretsSummary);
+                            callback(err, bloomberg, parentCo, brand, secretsSummary);
                         }
                     });
                 },
 
                 // 9.5th request, scrape url for subsidy tracker
-                function(violationData, bloomberg, parentCo,secretsSummary, callback) {
+                function(violationData, bloomberg, parentCo, brand, secretsSummary, callback) {
                     request("http://subsidytracker.goodjobsfirst.org/prog.php?company="+parentCo, function(err, response, html) {
 
                         var STurl;
@@ -343,15 +339,48 @@ module.exports.startServer = function(cb) {
                             STurl = $('.views-field.views-even').children().last().attr('href');
                             //console.log("9.5th request(STurl): "+STurl);
                         }
+                        if (STurl === undefined){
+                          STurl = "try_again";
+                          callback(err, STurl, violationData, bloomberg, parentCo, brand, secretsSummary);
+                        }
+                        else{
+                          callback(err, STurl, violationData, bloomberg, parentCo, brand, secretsSummary);
+                        }
 
-                        callback(err, STurl, violationData, bloomberg, parentCo, secretsSummary);
+
                     });
                 },
+
+                //If STurl = undefined, try subsidytracker url scraper again
+                function(STurl, violationData, bloomberg, parentCo, brand, secretsSummary, callback){
+                  //console.log("if STurl undefined: "+violationData);
+                  //console.log("if STurl undefined: "+ brand);
+                  //console.log("if STurl undefined: "+parentCo);
+                  if (STurl === "try_again"){
+                    request("http://subsidytracker.goodjobsfirst.org/prog.php?company="+brand, function(err, response, html) {
+                        // First we'll check to make sure no errors occurred when making the request
+                        if (!err) {
+
+                            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+                            //console.log("VTURL: "+html);
+                            var $ = cheerio.load(html);
+
+                            // We'll use the unique header class as a starting point.
+                            STurl = $('.views-field.views-even').children().last().attr('href');
+                            //console.log("try again request(VTurl): "+VTurl);
+                        }
+                        callback(err, STurl, violationData, bloomberg, parentCo, secretsSummary);
+                    });
+                  }else{
+                    callback(null, STurl, violationData, bloomberg, parentCo, secretsSummary);
+                  }
+                },
+
 
                 //tenth request, get xml data from subsidy tracker from goodjobsfirst
                 function(STurl, violationData, bloomberg, parentCo, secretsSummary, callback) {
                     // console.log("10th request(symbol): "+symbol);
-                    // console.log("10th request(parentCo): "+parentCo);
+                    //console.log("10th request(parentCo): "+STurl);
                     request(STurl + "&detail=x", function(err, res) {
 
                         // First we'll check to make sure no errors occurred when making the request

@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="Contact-Info">
                                         <p><i class="material-icons">phone</i><span id="co_profile_phone"></span>
-                                            <i class="material-icons">language</i><a href={{bloomberg.co_profile.url}}><span id="co_profile_website"></span></a><br>
+                                            <i class="material-icons">language</i><a href={{url}}><span id="co_profile_website"></span></a><br>
                                             <i class="material-icons">home</i><span id="co_profile_address"></span></p>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                                 <div id="violationsResults"></div>
                                 <script id="violations-template" type="text/x-handlebars-template">
                                     <div class="violations_list">
-                                        {{#each this}}
+                                        {{#each violations}}
                                         <p>
                                             <div class="very-light-lower-divider">
                                                 Company: {{company}} <br> Parent company: {{parent_company}}<br>
@@ -145,7 +145,7 @@
                                                         <span id="penalty_label">Penalty Value:</span>
                                                         <span id="penalty_value">${{penalty_amount_in_dollars}}</span>
                                             </div>
-                                            <div class="mdl-cell--col-12 violation_foot">
+                                            <div class="mdl-cell--col-12 violation_foot bold-lower-divider">
                                                 <p class="violation_description" id="regular-item">{{description}}</p>
                                                 <span class="violation_notes">{{violation_notes}}</span>
                                             </div>

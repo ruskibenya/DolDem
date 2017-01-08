@@ -19,9 +19,9 @@ window.upcSearch = {
             var bloomberg = response.bloomberg;
             var secretsSummary = response.secretsSummary;
             //console.log(secretsSummary);
-            //console.log(subsidyData.record);
-            //console.log("violationData: " +JSON.stringify(violationData.data.record.company));
-            //console.log("subsidyData: " + JSON.stringify(subsidyData.record_count));
+            console.log("bloomberg: "+JSON.stringify(bloomberg));
+            //console.log("violationData: " +JSON.stringify(violationData));
+            //console.log("subsidyData: " + JSON.stringify(subsidyData));
 
             //handlebars compile for subsidies
             var sub_hndlbr_source = $("#subsidies-template").html();
@@ -102,9 +102,8 @@ window.upcSearch = {
                     ownership_structure_of_parent: violationData.data.record.ownership_structure_of_parent,
                     violation_notes: violationData.data.record.notes
                 }
-                var context_vio = {
-                    violation
-                };
+                
+                var context_vio = {violation};
             } else {
                 for (i = 0; i < violationData.record_count; i++) {
                     violation = {
@@ -112,7 +111,7 @@ window.upcSearch = {
                         parent_company: violationData.data.record[i].parent_company,
                         location: violationData.data.record[i].location_state,
                         violation_city: violationData.data.record[i].city,
-                        penalty_amount_in_dollars: violationData.data.record[i].penalty_amount_in_dollars,
+                        penalty_amount_in_dollars: numberWithCommas(violationData.data.record[i].penalty_amount_in_dollars),
                         primary_offense: violationData.data.record[i].primary_offense,
                         description: violationData.data.record[i].description,
                         penalty_year: violationData.data.record[i].penalty_year,
@@ -123,11 +122,11 @@ window.upcSearch = {
                         ownership_structure_of_parent: violationData.data.record[i].ownership_structure_of_parent,
                         violation_notes: violationData.data.record[i].notes
                     }
+                    //console.log(violation);
                     violations.push(violation);
                 }
-                var context_vio = {
-                    violations
-                };
+                //console.log(violations);
+                var context_vio = {violations};
             }
 
 
@@ -146,6 +145,9 @@ window.upcSearch = {
             $("#co_profile_address").html(bloomberg.co_profile.address);
             $("#co_profile_phone").html(bloomberg.co_profile.phone);
             $("#co_profile_website").html(bloomberg.co_profile.website);
+
+//FIGURE OUT HREF FOR company website link!
+
 
             Handlebars.registerHelper("time_ago", function time_ago(time) {
 
@@ -215,7 +217,7 @@ window.upcSearch = {
             //FIGURE OUT HOW TO DO href=
             //$("#co_profile_url")=bloomberg.co_profile.url;
 
-
+            console.log(secretsSummary);
             secretsSummary = {
               cycle: secretsSummary.cycle,
               total: numberWithCommas(secretsSummary.total),
@@ -224,7 +226,8 @@ window.upcSearch = {
               lobbying: numberWithCommas(secretsSummary.lobbying),
               mems_invested: secretsSummary.mems_invested,
               congress_percent: Number(Math.round((((secretsSummary.mems_invested)/535)*100)+'e2')+'e-2'),
-              orgname: secretsSummary.orgname
+              orgname: secretsSummary.orgname,
+              source: "http://"+secretsSummary.source
             }
 
 
