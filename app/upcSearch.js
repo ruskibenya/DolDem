@@ -19,7 +19,7 @@ window.upcSearch = {
             var bloomberg = response.bloomberg;
             var secretsSummary = response.secretsSummary;
             //console.log(secretsSummary);
-            console.log("bloomberg: "+JSON.stringify(bloomberg));
+            //console.log("bloomberg: "+JSON.stringify(bloomberg));
             //console.log("violationData: " +JSON.stringify(violationData));
             //console.log("subsidyData: " + JSON.stringify(subsidyData));
 
@@ -46,9 +46,8 @@ window.upcSearch = {
                     investment_data: subsidyData.data.record.investment_data,
                     notes: subsidyData.data.record.notes
                 }
-                var context_sub = {
-                    subsidy
-                };
+                subsidies.push(subsidy);
+                var context_sub = {subsidies};
             } else {
                 for (i = 0; i < subsidyData.record_count; i++) {
 
@@ -71,9 +70,7 @@ window.upcSearch = {
                     subsidies.push(subsidy);
                 }
                 //console.log(subsidies);
-                var context_sub = {
-                    subsidies
-                };
+                var context_sub = {subsidies};
             }
             $("#subsidiesResults").html(subsidies_template(context_sub));
             //console.log(context);
@@ -86,6 +83,7 @@ window.upcSearch = {
             var violations = [];
             var violation;
             if (violationData.record_count == 1) {
+
                 violation = {
                     company: violationData.data.record.company,
                     parent_company: violationData.data.record.parent_company,
@@ -102,8 +100,10 @@ window.upcSearch = {
                     ownership_structure_of_parent: violationData.data.record.ownership_structure_of_parent,
                     violation_notes: violationData.data.record.notes
                 }
-                
-                var context_vio = {violation};
+
+                violations.push(violation);
+                var context_vio = {violations};
+                //console.log(context_vio);
             } else {
                 for (i = 0; i < violationData.record_count; i++) {
                     violation = {
@@ -217,7 +217,7 @@ window.upcSearch = {
             //FIGURE OUT HOW TO DO href=
             //$("#co_profile_url")=bloomberg.co_profile.url;
 
-            console.log(secretsSummary);
+            //console.log(secretsSummary);
             secretsSummary = {
               cycle: secretsSummary.cycle,
               total: numberWithCommas(secretsSummary.total),

@@ -68,7 +68,7 @@ module.exports.startServer = function(cb) {
                     var brand = products[0].brand;
                     var manufacturer = products[0].manufacturer;
                     //console.log("2nd request(brand): "+brand);
-                    //console.log("2nd request(manufacturer): "+manufacturer);
+                    console.log("2nd request(manufacturer): "+manufacturer);
 
 
                     request('http://api.corpwatch.org/companies.json?company_name=' + brand, function(err, results) {
