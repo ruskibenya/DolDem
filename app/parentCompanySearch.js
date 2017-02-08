@@ -41,12 +41,14 @@ module.exports = {
         parentCo_Query: function(results, parentCo, err) {
         var results = results.body;
         results = JSON.parse(results);
-        //console.log(results);
+        console.log(results);
         var companiesList = results.result.companies;
+        console.log("companiesList: "+ JSON.stringify(companiesList));
         for (var cw_id_key in companiesList) {
             if (companiesList.hasOwnProperty(cw_id_key)) {
                 var parentCo = results.result.companies[cw_id_key].company_name;
                 return parentCo;
+                console.log("parentCo: "+parentCo);
             }
         }
     }

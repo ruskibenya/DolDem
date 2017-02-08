@@ -1,6 +1,8 @@
 <!-- TOdo: make tab headers adjust to size of screen properly
            figure out href on tab1 co_profile_url
-           figure out href in lobbying More Info-->
+           figure out href in lobbying More Info
+           fix parentCompanySearch to return top_parent_id if min_cw_id is all same
+         https://jsfiddle.net/4djc0sx1/-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,8 +20,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.2.1/material.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.11.6/quagga.js"></script>
     <!-- use with precompiled templates    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.min.js"></script> -->
     <script src="upcSearch.js"></script>
+    <script src="BarcodeReader.js"></script>
 
 </head>
 
@@ -37,11 +41,13 @@
                 <div class="mdl-layout-spacer"></div>
                 <section id="UPC Search">
                     <form id="form-search">
-                        <div class="mdl-textfield mdl-js-textfield">
+                      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="openReader()" name="query">Scan barcode</button>
+                      <div id="interactive" class="viewport"></div>
+              <!--        <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="query">
                             <label class="mdl-textfield__label" for="query">Enter Barcode (UPC)</label>
                             <span class="mdl-textfield__error">Input is not a number!</span>
-                        </div>
+                        </div> -->
                     </form>
                     <p id="brand"></p>
                     <p id="manufacturer"></p>
