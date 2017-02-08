@@ -25,12 +25,11 @@ function openReader(){
 Quagga.onDetected(function(result) {
     var code = result.codeResult.code;
     console.log("The code is "+code);
-    return code;
 
-      //$("#form-search").val() = code;
-      //Quagga.stop();
+    var $form = $("#form-search");
 
-
-    //document.querySelector(".found").innerHTML = code;
+    $form.find("input[name='query']").val(code);
+    Quagga.stop();
+    $form.submit();
 });
 }

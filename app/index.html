@@ -41,7 +41,8 @@
                 <div class="mdl-layout-spacer"></div>
                 <section id="UPC Search">
                     <form id="form-search">
-                      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="openReader()" name="query">Scan barcode</button>
+                      <button class="submit-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Scan barcode</button>
+                      <input type="hidden" name="query" value=""/>
                       <div id="interactive" class="viewport"></div>
               <!--        <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="query">
@@ -204,6 +205,7 @@
                 // should cause a fetch and re-render
                 //to make more efficient create J-Query element form-search
                 var $formSearch = $("#form-search");
+                var $submitButton = $formSearch.find('.submit-button');
                 var $brand = $('#brand');
                 var $manufacturer = $('#manufacturer');
                 var $subsidies = $('#subsidies');
@@ -214,12 +216,19 @@
                 var $co_profile_phone = $('#co_profile_phone');
                 var $co_profile_website = $('#co_profile_website');
                 var $parentCo = $('#parentCo');
+
+                $submitButton.on('click', function(e){
+                   e.preventDefault(); //prevent form submission
+                   openReader();
+                });
+
                 $formSearch.submit(function(event) {
                     // cancel default behavior
                     event.preventDefault();
 
 
                     var query = $formSearch.find("input[name='query']").val();
+                    console.log("index query value = "+ query);
 
                     $brand.html('');
                     $manufacturer.html('');
