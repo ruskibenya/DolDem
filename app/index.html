@@ -41,7 +41,7 @@
                 <div class="mdl-layout-spacer"></div>
                 <section id="UPC Search">
                     <form id="form-search">
-                      <button class="submit-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Scan barcode</button>
+                      <button class="submit-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Scan barcode</button>
                       <input type="hidden" name="query" value=""/>
                       <div id="interactive" class="viewport"></div>
               <!--        <div class="mdl-textfield mdl-js-textfield">
@@ -233,7 +233,7 @@
                     $brand.html('');
                     $manufacturer.html('');
                     window.upcSearch.queryProducts(query, $brand, $manufacturer, $subsidies, $violations, $co_profile_description, $parentCo);
-
+                    $(".viewport").hide();
                 });
             });
         </script>

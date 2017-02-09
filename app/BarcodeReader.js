@@ -31,5 +31,6 @@ Quagga.onDetected(function(result) {
     $form.find("input[name='query']").val(code);
     Quagga.stop();
     $form.submit();
+    
 });
 }
