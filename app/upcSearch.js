@@ -19,13 +19,14 @@ window.upcSearch = {
             var bloomberg = response.bloomberg;
             var secretsSummary = response.secretsSummary;
             //console.log(secretsSummary);
-            console.log("bloomberg: "+JSON.stringify(bloomberg));
-            //console.log("violationData: " +JSON.stringify(violationData));
+            //console.log("bloomberg: "+JSON.stringify(bloomberg));
+            console.log("violationData: " +JSON.stringify(violationData));
             //console.log("subsidyData: " + JSON.stringify(subsidyData));
 
             //handlebars compile for subsidies
             var sub_hndlbr_source = $("#subsidies-template").html();
             var subsidies_template = Handlebars.compile(sub_hndlbr_source);
+
 
             var subsidies = [];
             var subsidy;
@@ -46,9 +47,8 @@ window.upcSearch = {
                     investment_data: subsidyData.data.record.investment_data,
                     notes: subsidyData.data.record.notes
                 }
-                var context_sub = {
-                    subsidy
-                };
+                subsidies.push(subsidy);
+                var context_sub = {subsidy};
             } else {
                 for (i = 0; i < subsidyData.record_count; i++) {
 
@@ -102,8 +102,9 @@ window.upcSearch = {
                     ownership_structure_of_parent: violationData.data.record.ownership_structure_of_parent,
                     violation_notes: violationData.data.record.notes
                 }
-                
-                var context_vio = {violation};
+                violations.push(violation);
+                var context_vio = {violations};
+
             } else {
                 for (i = 0; i < violationData.record_count; i++) {
                     violation = {
@@ -217,7 +218,7 @@ window.upcSearch = {
             //FIGURE OUT HOW TO DO href=
             //$("#co_profile_url")=bloomberg.co_profile.url;
 
-            console.log(secretsSummary);
+            //console.log(secretsSummary);
             secretsSummary = {
               cycle: secretsSummary.cycle,
               total: numberWithCommas(secretsSummary.total),

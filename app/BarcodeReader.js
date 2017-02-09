@@ -24,13 +24,13 @@ function openReader(){
 
 Quagga.onDetected(function(result) {
     var code = result.codeResult.code;
-    console.log("The code is "+code);
+    //console.log("The code is "+code);
 
     var $form = $("#form-search");
 
     $form.find("input[name='query']").val(code);
     Quagga.stop();
     $form.submit();
-    
+
 });
 }

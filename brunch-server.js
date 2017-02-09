@@ -34,7 +34,7 @@ module.exports.startServer = function(cb) {
     //get data from browser to web-server
     app.get('/products/:query', function(req, res) {
 
-      console.log(req.params.query);
+      //console.log(req.params.query);
 
         async.waterfall([
 
@@ -48,7 +48,7 @@ module.exports.startServer = function(cb) {
                     // Run the request
                     sem3.products.get_products(
                         function(err, products) {
-                            console.log("1st request(products): "+products);
+                            //console.log("1st request(products): "+products);
 
                             var products = JSON.parse(products);
                             //checks that upc returned something
@@ -68,7 +68,7 @@ module.exports.startServer = function(cb) {
                     var brand = products[0].brand;
                     var manufacturer = products[0].manufacturer;
                     //console.log("2nd request(brand): "+brand);
-                    console.log("2nd request(manufacturer): "+manufacturer);
+                    //onsole.log("2nd request(manufacturer): "+manufacturer);
 
 
                     request('http://api.corpwatch.org/companies.json?company_name=' + brand, function(err, results) {
