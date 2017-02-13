@@ -1,9 +1,3 @@
-/* ToDo:
-    - restructure to make way for forEach/for loop (LOOK back at brunch-serverNEW.js)
-    - get boardMembers to work in bloomberg.profile
-    - scrap parentCoSearch feature? Seems like unnecessary if just adjust VT + ST, what about bloomberg?
-         */
-
 
 var request = require('request');
 var parentCoSearch = require('./app/parentCompanySearch.js');

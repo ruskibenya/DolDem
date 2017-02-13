@@ -1,6 +1,4 @@
-//ToDo:
-//  - How to break up into multiple files to organize output: subsidydata, violationData, bloomberg, etc
-// Precompile handlebars templates
+
 
 
 function numberWithCommas(x) {
@@ -46,8 +44,9 @@ window.upcSearch = {
                     investment_data: subsidyData.data.record.investment_data,
                     notes: subsidyData.data.record.notes
                 }
+                subsidies.push(subsidy);
                 var context_sub = {
-                    subsidy
+                    subsidies
                 };
             } else {
                 for (i = 0; i < subsidyData.record_count; i++) {
@@ -102,8 +101,9 @@ window.upcSearch = {
                     ownership_structure_of_parent: violationData.data.record.ownership_structure_of_parent,
                     violation_notes: violationData.data.record.notes
                 }
+                violations.push(violation);
 
-                var context_vio = {violation};
+                var context_vio = {violations};
             } else {
                 for (i = 0; i < violationData.record_count; i++) {
                     violation = {
