@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "brunch watch --server",
-    "prod": "brunch build --production"
+    "prod": "brunch build --production",
+    "postinstall": "brunch build --optimize"
   },
   "dependencies": {
     "async": "^2.1.2",
@@ -22,7 +23,9 @@
     "request": "^2.76.0",
     "semantics3-node": "0.0.3",
     "util": "^0.10.3",
-    "xml2js": "^0.4.17"
+    "xml2js": "^0.4.17",
+    "statik": ">= 1.1.0",
+    "brunch": "1.x"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.0.0",
