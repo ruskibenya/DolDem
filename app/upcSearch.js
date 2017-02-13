@@ -19,7 +19,7 @@ window.upcSearch = {
             var bloomberg = response.bloomberg;
             var secretsSummary = response.secretsSummary;
             //console.log(secretsSummary);
-            console.log("bloomberg: "+JSON.stringify(bloomberg));
+            //console.log("bloomberg: "+JSON.stringify(bloomberg));
             //console.log("violationData: " +JSON.stringify(violationData));
             //console.log("subsidyData: " + JSON.stringify(subsidyData));
 
@@ -102,7 +102,7 @@ window.upcSearch = {
                     ownership_structure_of_parent: violationData.data.record.ownership_structure_of_parent,
                     violation_notes: violationData.data.record.notes
                 }
-                
+
                 var context_vio = {violation};
             } else {
                 for (i = 0; i < violationData.record_count; i++) {
@@ -217,7 +217,7 @@ window.upcSearch = {
             //FIGURE OUT HOW TO DO href=
             //$("#co_profile_url")=bloomberg.co_profile.url;
 
-            console.log(secretsSummary);
+            //console.log(secretsSummary);
             secretsSummary = {
               cycle: secretsSummary.cycle,
               total: numberWithCommas(secretsSummary.total),

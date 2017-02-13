@@ -1,6 +1,8 @@
 <!-- TOdo: make tab headers adjust to size of screen properly
            figure out href on tab1 co_profile_url
-           figure out href in lobbying More Info-->
+           figure out href in lobbying More Info
+           fix parentCompanySearch to return top_parent_id if min_cw_id is all same
+         https://jsfiddle.net/4djc0sx1/-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,8 +20,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.2.1/material.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.11.6/quagga.js"></script>
     <!-- use with precompiled templates    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.min.js"></script> -->
     <script src="upcSearch.js"></script>
+    <script src="BarcodeReader.js"></script>
 
 </head>
 
@@ -37,11 +41,14 @@
                 <div class="mdl-layout-spacer"></div>
                 <section id="UPC Search">
                     <form id="form-search">
-                        <div class="mdl-textfield mdl-js-textfield">
+                      <button class="submit-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Scan barcode</button>
+                      <input type="hidden" name="query" value=""/>
+                      <div id="interactive" class="viewport"></div>
+              <!--        <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="query">
                             <label class="mdl-textfield__label" for="query">Enter Barcode (UPC)</label>
                             <span class="mdl-textfield__error">Input is not a number!</span>
-                        </div>
+                        </div> -->
                     </form>
                     <p id="brand"></p>
                     <p id="manufacturer"></p>
@@ -198,6 +205,7 @@
                 // should cause a fetch and re-render
                 //to make more efficient create J-Query element form-search
                 var $formSearch = $("#form-search");
+                var $submitButton = $formSearch.find('.submit-button');
                 var $brand = $('#brand');
                 var $manufacturer = $('#manufacturer');
                 var $subsidies = $('#subsidies');
@@ -208,17 +216,19 @@
                 var $co_profile_phone = $('#co_profile_phone');
                 var $co_profile_website = $('#co_profile_website');
                 var $parentCo = $('#parentCo');
+                $submitButton.on('click', function(e){
+                   e.preventDefault(); //prevent form submission
+                   openReader();
+                });
                 $formSearch.submit(function(event) {
                     // cancel default behavior
                     event.preventDefault();
-
-
                     var query = $formSearch.find("input[name='query']").val();
-
+                    console.log("UPC code from Scan "+ query);
                     $brand.html('');
                     $manufacturer.html('');
                     window.upcSearch.queryProducts(query, $brand, $manufacturer, $subsidies, $violations, $co_profile_description, $parentCo);
-
+                    $(".viewport").hide();
                 });
             });
         </script>
