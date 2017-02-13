@@ -24,7 +24,7 @@
     "util": "^0.10.3",
     "xml2js": "^0.4.17",
     "statik": ">= 1.1.0",
-    "brunch": "2.4.0"
+    "brunch": "^2.4.0"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.0.0",
