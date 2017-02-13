@@ -231,7 +231,7 @@ module.exports.startServer = function(cb) {
                       //console.log("6th request(orgID): "+JSON.stringify(orgID));
                       parseString(secretsSummary, {explicitArray: false}, function(err, result){
                         if (! err){
-                          //console.log(JSON.stringify(result));
+                          console.log("openSecrets result: "+JSON.stringify(result));
                           secretsSummary = result.response.organization.$;
                           //console.log("secretsSummary: "+JSON.stringify(secretsSummary));
                         }
