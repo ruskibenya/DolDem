@@ -1,29 +1,24 @@
-# Brunch + Babel/ES6
+## DolDem: Dollar Democracy
 
-This is a modern JS skeleton for [Brunch](http://brunch.io).
+What is it?
+--------------
 
-## Installation
+DolDem is a final project for LaunchCode 2016 course, a version of the EDX program.
+DolDem is a tool for consumers to quickly search and compare corporations by barcode
+and return valuable information about the company's political and financial history.
 
-Clone this repo manually or use `brunch new dir -s brunch/with-es6`
+Specs
+--------------
+DolDem has been built using NodeJS on a Brunch skeleton. It utilizes the Express JS
+server. Other node packages include Semantics3, async, cheerio, handlebars, MDL, xml2js,
+and cors.
+DolDem is intended to be run in browser.
 
-## Getting started
+Legal
+---------------
+DoleDem is intended solely for academic and educational purposes. No financial gain
+is to be made from DolDem.
 
-* Install (if you don't have them):
-    * [Node.js](http://nodejs.org): `brew install node` on OS X
-    * [Brunch](http://brunch.io): `npm install -g brunch`
-    * Brunch plugins and app dependencies: `npm install`
-* Run:
-    * `brunch watch --server` — watches the project with continuous rebuild. This will also launch HTTP server with [pushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
-    * `brunch build --production` — builds minified project for production
-* Learn:
-    * `public/` dir is fully auto-generated and served by HTTP server.  Write your code in `app/` dir.
-    * Place static files you want to be copied from `app/assets/` to `public/`.
-    * [Brunch site](http://brunch.io), [Getting started guide](https://github.com/brunch/brunch-guide#readme)
-
-## ES7
-
-To use proposed JS features not included into ES6, do this:
-
-* `npm install --save-dev babel-preset-stage-0`
-* in `brunch-config.js`, add the preset: `presets: ['es2015', 'stage-0']`
-# DolDem
+Contact
+---------------
+For any questions or concerns please contact Benjamin Aronov at ruskibear31@gmail.com
