@@ -164,22 +164,22 @@ module.exports.startServer = function(cb) {
 
                               //Get Company profile: description, address, phone, website, url
                               var description = $('.profile__description').text();
-                              //console.log(description);
+                              //console.log("Fifth Request (description): "+description);
 
                               var address = $('.profile__detail.profile__detail__address').clone().children().remove().end().text();
                               var phone = $('.profile__detail.profile__detail__address').next().clone().children().remove().end().text();
-                              //console.log(website);
                               bloomberg.co_profile = {description:description, address:address, phone:phone};
 
                               $('.profile__detail__website_link').each(function(){
                                 var website = $(this).text();
                                 var url = $(this).attr('href');
-                                //console.log(url);
+                                //console.log("Fifth request (URL): "+url);
+                                //console.log("Fifth request (website): "+website);
                                 bloomberg.co_profile.website = website;
                                 bloomberg.co_profile.url = url;
                               })
 
-                              //console.log(bloomberg);
+                              //console.log("Fifth request (bloomberg): "+bloomberg);
                         }
 
 
@@ -187,7 +187,7 @@ module.exports.startServer = function(cb) {
                     });
                 },
 
-                //seventh request, get orgID from openSecrets api
+                //sixth request, get orgID from openSecrets api
 
                                  function (bloomberg, parentCo, brand, callback) {
                                    //openSecrets api_key
@@ -213,7 +213,7 @@ module.exports.startServer = function(cb) {
                                    });
                                  },
 
-                // //eigth request, get lobby info from openSecrets api
+                // 7th request, get lobby info from openSecrets api
                 function(orgID, parentCo, bloomberg, brand, callback) {
                   //openSecrets api_key
                   var key = "27ca23c2803eddb132adecd7238d4c94";
@@ -238,7 +238,7 @@ module.exports.startServer = function(cb) {
                 },
 
 
-                // 8.5th request, scrape url for violationtracker
+                // 7.5th request, scrape url for violationtracker
                 function(bloomberg, parentCo, brand, secretsSummary, callback) {
 
                   //console.log(parentCo);
@@ -292,7 +292,7 @@ module.exports.startServer = function(cb) {
                 },
 
 
-                //nineth request, get xml data from violation tracker from goodjobsfirst
+                //8th request, get xml data from violation tracker from goodjobsfirst
                 function(VTurl, bloomberg, parentCo, brand, secretsSummary, callback) {
 
                     //console.log("8th request(symbol): "+VTurl);
@@ -318,7 +318,7 @@ module.exports.startServer = function(cb) {
                     });
                 },
 
-                // 9.5th request, scrape url for subsidy tracker
+                // 8.5th request, scrape url for subsidy tracker
                 function(violationData, bloomberg, parentCo, brand, secretsSummary, callback) {
                     request("http://subsidytracker.goodjobsfirst.org/prog.php?company="+parentCo, function(err, response, html) {
 
@@ -371,7 +371,7 @@ module.exports.startServer = function(cb) {
                 },
 
 
-                //tenth request, get xml data from subsidy tracker from goodjobsfirst
+                //9th request, get xml data from subsidy tracker from goodjobsfirst
                 function(STurl, violationData, bloomberg, parentCo, secretsSummary, callback) {
                     // console.log("10th request(symbol): "+symbol);
                     //console.log("10th request(parentCo): "+STurl);

@@ -133,7 +133,7 @@ window.upcSearch = {
             $("#violationsResults").html(violations_template(context_vio));
 
 
-            //console.log("bloomberg: "+ JSON.stringify(bloomberg.press_release));
+
 
             //handlebars compile for bloomberg execs
             var execs_source = $("#execs-template").html();
@@ -145,8 +145,7 @@ window.upcSearch = {
             $("#co_profile_address").html(bloomberg.co_profile.address);
             $("#co_profile_phone").html(bloomberg.co_profile.phone);
             $("#co_profile_website").html(bloomberg.co_profile.website);
-
-//FIGURE OUT HREF FOR company website link!
+            $("#co_profile_website").attr("href", bloomberg.co_profile.url);
 
 
             Handlebars.registerHelper("time_ago", function time_ago(time) {
@@ -209,13 +208,13 @@ window.upcSearch = {
             var context_news = bloomberg.news;
             $("#newsResults").html(news_template(context_news));
 
+            //console.log("bloomberg: "+ JSON.stringify(bloomberg.press_release));
+
             var press_source = $("#press-template").html();
             var press_template = Handlebars.compile(press_source);
             var context_press = bloomberg.press_release;
             $("#pressResults").html(press_template(context_press));
 
-            //FIGURE OUT HOW TO DO href=
-            //$("#co_profile_url")=bloomberg.co_profile.url;
 
             //console.log(secretsSummary);
             secretsSummary = {

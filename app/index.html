@@ -1,26 +1,24 @@
-<!-- TOdo:  hyperlinks open in new tab/window
-          make tab headers adjust to size of screen properly
-           figure out href on tab1 co_profile_url
-           figure out href in lobbying More Info
-           fix parentCompanySearch to return top_parent_id if min_cw_id is all same
+<!-- TOdo:
+
+  2. make tab headers adjust to size of screen properly
+        - go horizontal instead of vertical at certain size
+
+3. fix parentCompanySearch to return top_parent_id if min_cw_id is all same
+
+4. get boardMembers to work in bloomberg.profile
+
+Extra:
+
+5. In upcSearch:
+          - How to break up into multiple files to organize output: subsidydata, violationData, bloomberg, etc
+          - Precompile handlebars templates
+
+6. In brunch-server:
+      - restructure to make way for forEach/for loop (LOOK back at brunch-serverNEW.js)
+      - scrap parentCoSearch feature? Seems like unnecessary if just adjust VT + ST, what about bloomberg?
+
          https://jsfiddle.net/4djc0sx1/-->
 
-<!-- From upcSearch:
-         //ToDo:
-         //  - How to break up into multiple files to organize output: subsidydata, violationData, bloomberg, etc
-         // Precompile handlebars templates
-
--->
-
-<!-- From brunch-server:
-
-/* ToDo:
-    - restructure to make way for forEach/for loop (LOOK back at brunch-serverNEW.js)
-    - get boardMembers to work in bloomberg.profile
-    - scrap parentCoSearch feature? Seems like unnecessary if just adjust VT + ST, what about bloomberg?
-         */
-
--->
 
 
 <!DOCTYPE html>
@@ -101,7 +99,7 @@
                                         <script id="execs-template" type="text/x-handlebars-template">
                                             <ul class="list">
                                                 {{#each this}}
-                                                <li class="very-light-lower-divider">{{jobtitle}}: <right style="right"><a href={{url}} id="big-bold">{{name}}</a></right>{{/each}}</li>
+                                                <li class="very-light-lower-divider">{{jobtitle}}: <right style="right"><a target="_blank" href=" {{url}} " id="big-bold">{{name}}</a></right>{{/each}}</li>
                                             </ul>
                                         </script>
                                     </div>
@@ -110,7 +108,7 @@
                                     </div>
                                     <div class="Contact-Info">
                                         <p><i class="material-icons">phone</i><span id="co_profile_phone"></span>
-                                            <i class="material-icons">language</i><a href={{url}}><span id="co_profile_website"></span></a><br>
+                                            <i class="material-icons">language</i><a target="_blank"  id="co_profile_website"></a><br>
                                             <i class="material-icons">home</i><span id="co_profile_address"></span></p>
                                     </div>
                                 </div>
@@ -126,7 +124,7 @@
                                                 {{#each this}}
                                                 <li class="very-light-lower-divider">
                                                     <i class="material-icons">access_time</i> {{time_ago time_published}}<br>
-                                                    <a href={{article_url}}>{{headline}}</a>
+                                                    <a target="_blank" href={{article_url}}>{{headline}}</a>
                                                 </li>
                                                 {{/each}}
                                             </ul>
@@ -142,7 +140,7 @@
                                                 {{#each this}}
                                                 <li class="very-light-lower-divider">
                                                     <i class="material-icons">access_time</i> {{time_ago time_published}} <br>
-                                                    <a href={{article_url}}>{{headline}}</a>
+                                                    <a target="_blank" href={{article_url}}>{{headline}}</a>
                                                 </li>
                                                 {{/each}}
                                             </ul>
@@ -208,7 +206,7 @@
                                             <li class="very-light-lower-divider">Total Spent on Lobbying: ${{lobbying}} </li>
                                             <li class="very-light-lower-divider">{{mems_invested}} members of Congress ({{congress_percent}}%) own {{orgname}} stock.</li>
                                         </ul>
-                                        <a href={{source}}>More Info</a>
+                                        <a target="_blank" href={{source}}>More Info</a>
                                     </div>
                                 </script>
                             </div>
