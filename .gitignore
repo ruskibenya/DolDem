@@ -24,6 +24,3 @@ node_modules/
 
 # Brunch output folder.
 public/
-
-node_modules
-public
