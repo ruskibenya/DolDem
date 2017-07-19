@@ -7,9 +7,13 @@
     "type": "git",
     "url": ""
   },
+  "engines": {
+    "node": "4.1.1"
+  },
   "scripts": {
     "start": "brunch watch --server",
-    "prod": "brunch build --production"
+    "prod": "brunch build --production",
+    "postinstall": "brunch build --optimize"
   },
   "dependencies": {
     "async": "^2.1.2",
