@@ -12,8 +12,7 @@
   },
   "scripts": {
     "start": "brunch watch --server",
-    "prod": "brunch build --production",
-    "postinstall": "brunch build --optimize"
+    "prod": "brunch build --production"
   },
   "dependencies": {
     "async": "^2.1.2",
