@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "brunch watch --server",
-    "prod": "brunch build --production",
+    "prod": "brunch build --production"
   },
   "dependencies": {
     "async": "^2.1.2",
