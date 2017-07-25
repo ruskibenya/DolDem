@@ -3,7 +3,7 @@
   "description": "Vote with your dollar!",
   "author": "Benjamin Aronov",
   "version": "0.1.0",
-  "main": "public/index.html",
+  "main": "public/app.js",
   "repository": {
     "type": "git",
     "url": ""
