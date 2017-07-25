@@ -18,6 +18,7 @@ module.exports.startServer = function(cb) {
     // REMOVE THIS PROBABLY, used in subsidyDATA and violationData
     var parseString = require('xml2js').parseString;
 
+    var port = process.env.PORT || 3333;
 
     app.use(express.static('app'));
     // Semantics3 api credentials
@@ -419,8 +420,8 @@ module.exports.startServer = function(cb) {
 
 
 
-    app.listen(process.env.PORT, function() {
-        console.log('web server listening on port 3333');
+    app.listen(port, function() {
+        console.log('web server listening on port '+ port);
     });
 
     cb();
