@@ -1,0 +1,255 @@
+<!-- TOdo:
+
+  2. make tab headers adjust to size of screen properly
+        - go horizontal instead of vertical at certain size
+
+3. fix parentCompanySearch to return top_parent_id if min_cw_id is all same
+
+4. get boardMembers to work in bloomberg.profile
+
+Extra:
+
+5. In upcSearch:
+          - How to break up into multiple files to organize output: subsidydata, violationData, bloomberg, etc
+          - Precompile handlebars templates
+
+6. In brunch-server:
+      - restructure to make way for forEach/for loop (LOOK back at brunch-serverNEW.js)
+      - scrap parentCoSearch feature? Seems like unnecessary if just adjust VT + ST, what about bloomberg?
+
+         https://jsfiddle.net/4djc0sx1/-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>DolDem</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.2.1/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-blue.min.css" />
+    <link rel="stylesheet" href="./styles/main.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.2.1/material.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.11.6/quagga.js"></script>
+    <!-- use with precompiled templates    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.min.js"></script> -->
+    <script src="upcSearch.js"></script>
+    <script src="BarcodeReader.js"></script>
+
+</head>
+
+
+<!-- HTML 2 -->
+
+<body>
+    <div id="app"></div>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+            <div class="mdl-layout__header-row">
+              <div class="title">
+                <span class="mdl-layout-title">$DEMOCRACY<br><span style="font-weight: 100; font-family:cursive; font-size: 12pt">A Nutritional Label For Your Wallet</span></span>
+              </div>
+                <div class="mdl-layout-spacer"></div>
+                <section id="UPC Search">
+                    <form id="form-search">
+                      <button class="submit-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Scan barcode</button>
+                      <input type="hidden" name="query" value=""/>
+                      <div id="interactive" class="viewport"></div>
+              <!--        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="query">
+                            <label class="mdl-textfield__label" for="query">Enter Barcode (UPC)</label>
+                            <span class="mdl-textfield__error">Input is not a number!</span>
+                        </div> -->
+                    </form>
+                    <p id="brand"></p>
+                    <p id="manufacturer"></p>
+                    <p id="subsidies"></p>
+                    <p id="violations"></p>
+
+                </section>
+            </div>
+        </header>
+
+        <main>
+            <div class="mdl-tabs vertical-mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--3-col">
+                        <div class="mdl-tabs__tab-bar">
+                            <a href="#tab1-panel" class="mdl-tabs__tab is-active"><span class="hollow-circle"></span><i class="material-icons">business</i>Company Info</a>
+                            <a href="#tab2-panel" class="mdl-tabs__tab"><span class="hollow-circle"></span><i class="material-icons">today</i>Company News</a>
+                            <a href="#tab3-panel" class="mdl-tabs__tab"><span class="hollow-circle"></span><i class="material-icons">gavel</i>Violations</a>
+                            <a href="#tab4-panel" class="mdl-tabs__tab"><span class="hollow-circle"></span><i class="material-icons">monetization_on</i>Subsidies</a>
+                            <a href="#tab5-panel" class="mdl-tabs__tab"><span class="hollow-circle"></span><i class="material-icons">account_balance</i>Lobbying</a>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <div class="mdl-cell mdl-cell--12-col">
+                          <div class="bold-lower-divider" id="nutrition-label"> <span id="parentCo"></span> COMPANY FACTS </div>
+                            <div class="mdl-tabs__panel is-active" id="tab1-panel">
+                                <div class="co_profile bold-lower-divider">
+                                    <div class="Execs light-lower-divider">
+                                        <div id="execsResults"></div>
+                                        <script id="execs-template" type="text/x-handlebars-template">
+                                            <ul class="list">
+                                                {{#each this}}
+                                                <li class="very-light-lower-divider">{{jobtitle}}: <right style="right"><a target="_blank" href=" {{url}} " id="big-bold">{{name}}</a></right>{{/each}}</li>
+                                            </ul>
+                                        </script>
+                                    </div>
+                                    <div class="Description bold-lower-divider">
+                                        <p id="co_profile_description"></p>
+                                    </div>
+                                    <div class="Contact-Info">
+                                        <p><i class="material-icons">phone</i><span id="co_profile_phone"></span>
+                                            <i class="material-icons">language</i><a target="_blank"  id="co_profile_website"></a><br>
+                                            <i class="material-icons">home</i><span id="co_profile_address"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mdl-tabs__panel" id="tab2-panel">
+                              <div class="content-grid mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col">
+                                  <div class="subtitles light-lower-divider" id="big-bold">Co News</div>
+                                    <div class="news light-lower-divider">
+                                        <div id="newsResults"></div>
+                                        <script id="news-template" type="text/x-handlebars-template">
+                                            <ul class="list">
+                                                {{#each this}}
+                                                <li class="very-light-lower-divider">
+                                                    <i class="material-icons">access_time</i> {{time_ago time_published}}<br>
+                                                    <a target="_blank" href={{article_url}}>{{headline}}</a>
+                                                </li>
+                                                {{/each}}
+                                            </ul>
+                                        </script>
+                                    </div>
+                                  </div>
+                                  <div class="mdl-cell mdl-cell--6-col">
+                                    <div class="subtitles light-lower-divider" id="big-bold">Press Releases</div>
+                                    <div class="press light-lower-divider">
+                                        <div id="pressResults"></div>
+                                        <script id="press-template" type="text/x-handlebars-template">
+                                            <ul class="list">
+                                                {{#each this}}
+                                                <li class="very-light-lower-divider">
+                                                    <i class="material-icons">access_time</i> {{time_ago time_published}} <br>
+                                                    <a target="_blank" href={{article_url}}>{{headline}}</a>
+                                                </li>
+                                                {{/each}}
+                                            </ul>
+                                        </script>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="mdl-tabs__panel" id="tab3-panel">
+                                <div id="violationsResults"></div>
+                                <script id="violations-template" type="text/x-handlebars-template">
+                                    <div class="violations_list">
+                                        {{#each violations}}
+                                        <p>
+                                            <div class="very-light-lower-divider">
+                                                Company: {{company}} <br> Parent company: {{parent_company}}<br>
+                                            </div>
+                                            <div class="very-light-lower-divider">
+                                                HQ Country of Parent Company: {{hq_country_of_parent}} <br> HQ State of Parent Company: {{hq_state_of_parent}} <br> Ownership Structure of Parent Company: {{ownership_structure_of_parent}} <br> Primary Offense:
+                                                {{primary_offense}} <br> Civil or Criminal: {{civil_criminal}} <br> Agency:{{violation_agency}} <br>
+                                            </div>
+                                            <div class="bold-lower-divider">
+                                                Violation Location: {{violation_city}}, {{location}}<br>
+                                            </div>
+                                            <div class="light-lower-divider violation_data" id="padding">
+                                                        <span id="penalty_label">Penalty Value:</span>
+                                                        <span id="penalty_value">${{penalty_amount_in_dollars}}</span>
+                                            </div>
+                                            <div class="mdl-cell--col-12 violation_foot bold-lower-divider">
+                                                <p class="violation_description" id="regular-item">{{description}}</p>
+                                                <span class="violation_notes">{{violation_notes}}</span>
+                                            </div>
+                                        </p>
+                                        {{/each}}
+                                    </div>
+                                </script>
+                            </div>
+                            <div class="mdl-tabs__panel" id="tab4-panel">
+                                <div id="subsidiesResults"></div>
+                                <script id="subsidies-template" type="text/x-handlebars-template">
+                                    <ul class="list">
+                                        {{#each subsidies}}
+                                        <li class="light-lower-divider">
+                                          <div class="light-lower-divider">company: {{company}} <br>parent company: {{parent_company}} <br>description: {{description}} <br>city: {{city}}<br>  county: {{county}} <br>location: {{location}}</div>
+                                          <div class="very-light-lower-divider">subsidy value: <span id="subsidy_value"> {{subsidy_value}}</span> <br>subsidy type: {{subsidy_type}} <br>  subsidy year:{{subsidy_year}}<br>  program name: {{program_name}} <br> subsidy source: {{subsidy_source}} </div>
+                                          <div class="very-light-lower-divider">notes:{{notes}}</div>
+                                          <div class="bold-lower-divider">investment data: {{investment_data}} <br> jobs data: {{jobs_data}}</div>
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                </script>
+                            </div>
+                            <div class="mdl-tabs__panel" id="tab5-panel">
+                                <div id="lobbyingResults"></div>
+                                <script id="lobbying-template" type="text/x-handlebars-template">
+                                    <div class="lobbying_entry">
+                                        <h3 class="light-lower-divider"> Election Cycle: {{cycle}} </h3>
+                                        <ul class="list">
+                                            <li class="very-light-lower-divider"> Total Political Contributions: ${{total}} </li>
+                                            <!-- to political candidates, party commmittees, PACs, outside spending groups, or 527 groups by {{orgname}} PAC, employees and their families -->
+                                            <li class="very-light-lower-divider"><img src="/assets/DemDonk.png" alt="DemDonkey">Contributions to Democrats: ${{dems}}</li>
+                                            <li class="very-light-lower-divider"><img src="/assets/repEle.png" alt="RepEle">Contributions to Republicans: ${{repubs}}</li>
+                                            <li class="very-light-lower-divider">Total Spent on Lobbying: ${{lobbying}} </li>
+                                            <li class="very-light-lower-divider">{{mems_invested}} members of Congress ({{congress_percent}}%) own {{orgname}} stock.</li>
+                                        </ul>
+                                        <a target="_blank" href={{source}}>More Info</a>
+                                    </div>
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            $(document).ready(function() {
+                // add a submit handler for the form above
+                // should cause a fetch and re-render
+                //to make more efficient create J-Query element form-search
+                var $formSearch = $("#form-search");
+                var $submitButton = $formSearch.find('.submit-button');
+                var $brand = $('#brand');
+                var $manufacturer = $('#manufacturer');
+                var $subsidies = $('#subsidies');
+                var $violations = $('#violations');
+                var $co_profile = $('#co_profile');
+                var $co_profile_description = $('#co_profile_description');
+                var $co_profile_address = $('#co_profile_address');
+                var $co_profile_phone = $('#co_profile_phone');
+                var $co_profile_website = $('#co_profile_website');
+                var $parentCo = $('#parentCo');
+                $submitButton.on('click', function(e){
+                   e.preventDefault(); //prevent form submission
+                   openReader();
+                });
+                $formSearch.submit(function(event) {
+                    // cancel default behavior
+                    event.preventDefault();
+                    var query = $formSearch.find("input[name='query']").val();
+                    console.log("UPC code from Scan "+ query);
+                    $brand.html('');
+                    $manufacturer.html('');
+                    window.upcSearch.queryProducts(query, $brand, $manufacturer, $subsidies, $violations, $co_profile_description, $parentCo);
+                    $(".viewport").hide();
+                });
+            });
+        </script>
+    </div>
+</body>
+
+</html>
