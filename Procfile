@@ -1,1 +1,1 @@
-web: node server/brunch-server.js
+web: node brunch-server.js
