@@ -14,7 +14,6 @@ module.exports.startServer = function(cb) {
     var cheerio = require('cheerio');
     var util = require('util');
 
-
     // REMOVE THIS PROBABLY, used in subsidyDATA and violationData
     var parseString = require('xml2js').parseString;
 
@@ -415,7 +414,7 @@ module.exports.startServer = function(cb) {
             }
         );
 
-    });
+    })
 
 
 
