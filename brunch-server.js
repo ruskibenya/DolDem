@@ -419,7 +419,7 @@ module.exports.startServer = function(cb) {
 
 
 
-    app.listen(process.env.PORT || 80, function() {
+    app.listen(process.env.PORT, function() {
         console.log('web server listening on port 80');
     });
 
